@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+   <link rel="stylesheet" href="css/main.css" />
+   <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/teacher/teacher.css">
+</head>
+
+<body>
+        <header class="mui-bar mui-bar-transparent">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+                <h1 class="mui-title">发布视频</h1>
+        </header>
+    <div class="teacher-box mt44">
+        <ul class="mui-table-view mgno ">
+            <li class="mui-table-view-cell g-fs-15">课时
+                    <input class="g-fr classHour" placeholder="请输入课时" type="text">
+                <!-- <a class="mui-navigate-right">
+                    <span class="g-fr">第五课时</span>
+                </a> -->
+            </li>
+
+            <li class="mui-table-view-cell g-fs-15">课程名称
+                <input class="g-fr kcname" placeholder="请输入课程名称" type="text">
+            </li>
+
+
+            <li class="mui-table-view-cell g-fs-15">可观看的最小课时
+                    <input class="g-fr enable" placeholder="请输入最小课时" type="text">
+                <!-- <a class="mui-navigate-right">
+                    <span class="g-fr">第三课时</span>
+                </a> -->
+            </li>
+
+        </ul>
+        
+        <section class="fill-info mgno">
+            <div class="fill-title">视频简介</div>
+            <textarea name="" id="kcjj" placeholder="请详细填写课程描述"></textarea>
+        </section>
+        <section class="fill-info mgno border-top">
+                <div class="upvideo-title">
+                        上传视频
+                </div>
+                <div class="upload-class">
+                    <img class="business" src="./img/upload-img.png" alt="">
+                </div>
+    
+            </section>
+            <div class="video-buttonbox">
+                <a href="javascipt:vold(0);" class="big-button big-orange">发布</a>
+            </div>
+            
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/mui.min.js"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+			swipeBack: true
+        });
+    mui.plusReady(function(){
+        var lessionId = ""
+        var videoPicUrl = ""
+        var videoUrl = ""
+
+        if(mui.os.plus){
+            mui.plusReady(function () {
+                var self = plus.webview.currentWebview();
+                lessionId = self.targetId;
+            })
+        }else{
+            var targetId = getQueryString('targetId');
+            lessionId = targetId;
+        }
+        
+        fileTool.options.uploadUrl = uploadUrl;
+        mui(".business")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "上传视频文件"
+						}, {
+							title: '上传视频描述照片'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(videoFiles);
+						} else if (e.index == 2) {
+							fileTool.galleryImgs(imgFiles);
+						}
+					}
+            );
+        })
+
+        function videoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				
+				fileTool.imgUpload(files,function(err,res){
+                    // var imgurl = uploadFilePreUrl + res;
+                    //传值与修改图片
+					videoUrl = res;
+					// $(".business").attr("src", imgurl);
+				});
+				if (files.length > 0) {}
+        }
+
+        function imgFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				
+				fileTool.imgUpload(files,function(err,res){
+                    var imgurl = uploadFilePreUrl + res;
+                    //传值与修改图片
+					videoPicUrl = res;
+					$(".business").attr("src", imgurl);
+				});
+				if (files.length > 0) {}
+        }
+
+
+      
+
+        
+        $("body").on("tap", ".big-orange", function(res){
+            var data = {
+                            "lessonID": lessionId,
+                            "classHour": $(".classHour").val(),
+                            "name": $(".kcname").val(),
+                            "enable": parseFloat($(".enable").val()),
+                            "length": 45,
+                            "introduction": $("#kcjj").val(),
+                            "videoPicUrl": "",
+                            "url": ""
+                        }
+            data.videoPicUrl = videoPicUrl;
+            data.url = videoUrl;
+            postData(pubVideoUrl, data, function(res){
+                if(res.resultCode == "000000"){
+                    mui.openWindow({
+                                        url: "myPublishKc.html",
+                                        id: "myPublishKc.html"
+                                });
+                }else{
+                    mui.toast(res.desc)
+                }
+            })
+        })
+    })
+</script>
+
+</html>

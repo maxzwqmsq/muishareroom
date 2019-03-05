@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/answers/tip.css">
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的回答</h1>
+	</header>
+    <div class="myanswer-index mt44">
+        <section class="head-info clearfix">
+            <div>
+                <p class="g-fs-16 g-bold color-orange">3</p>
+                <p class="g-fs-12 color-black">已采纳</p>
+            </div>
+            <div>
+                <p class="g-fs-16 g-bold color-orange">3</p>
+                <p class="g-fs-12 color-black">已解决</p>
+            </div>
+        </section>
+
+        <section class="tab-box clearfix">
+            <a href="###" class="g-fl">
+                回答3
+            </a>
+            <a href="###" class="g-fr active">
+                提问3
+            </a>
+        </section>
+
+        <section class="info-list">
+            <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-14 color-orange">未解决</p>
+            </div>
+
+            <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-14 color-orange">未解决</p>
+            </div>
+
+
+            <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-14 color-orange">未解决</p>
+            </div>
+        </section>
+
+        <a href="###" class="big-button big-orange fixed-bottom">提交</a>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+    $(".tab-box a").click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+    })
+</script>
+
+</html>

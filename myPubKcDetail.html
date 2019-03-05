@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/class/class.css">
+</head>
+
+<body>
+    <div class="class-detail">
+        <section class="class-banner clearfix">
+            <!-- <div class="img-box g-fl">
+                <img src="./img/head-img.png" alt="">
+            </div>
+            <div class="info g-fl">
+                <p class="g-fs-16 color-black g-bold">吉他 I 尤克里入门课程</p>
+                <p class="g-fs-16 color-orange">￥1000</p>
+                <p class="g-fs-12 color-grey">60 课时</p>
+            </div> -->
+        </section>
+
+        <a href="javascipt:vold(0);" class="info-item clearfix g-relative studentNum">
+           <span class="g-fl g-fs-15 color-grey">已报</span> <span class="num-info g-fr g-fs-14 color-deepgrey">0</span>
+            <span class="mui-icon mui-icon-arrowright color-deepgrey"></span>
+        </a>
+
+        <a href="javascipt:vold(0);" class="info-item clearfix g-relative videoList">
+            <!-- <div class="video-box g-fl">
+                <img src="./img/head-img.png" alt="">
+            </div>
+            <div class="video-box g-fl">
+                <img src="./img/head-img.png" alt="">
+            </div>
+            <div class="video-box g-fl">
+                <img src="./img/head-img.png" alt="">
+            </div> -->
+        </a>
+
+        <section class="class-info">
+            <!-- <div class="title-box">课程详情</div>
+            <p>课程类别：吉他/尤克里里</p>
+            <p>课程级别：高级</p>
+            <p>课程人数：1人</p>
+            <p>课程时间：45分钟</p>
+            <p>课程简介：</p>
+            <p>擅长吉他演奏，拥有十余年的吉他教育经验，擅长吉他演奏，拥有十余年的吉他教育经验，擅长吉他演奏，拥有十余年的吉他教育经验，擅长吉他演奏</p> -->
+        </section>
+
+        <a href="javascipt:vold(0);" class="info-item clearfix g-relative">
+            <span class="g-fl g-fs-15 color-grey">添加时间</span>   
+            <span class="g-fr g-fs-12 color-deepgrey createTime"></span>    
+        </a>
+
+        <div class="tearcher-bottom fixed-bottom clearfix">
+            <a id="TeacherDeleteLesson" href="javascipt:vold(0);">删除</a>
+            <a id="TeacherModifyLesson" href="javascipt:vold(0);">修改</a>
+        </div>
+
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+mui.init({
+    swipeBack: true
+    });
+        
+mui.ready(function() {
+    var lessionId = "";
+
+    if(mui.os.plus){
+            mui.plusReady(function () {
+                var self = plus.webview.currentWebview();
+                lessionId = self.targetId 
+                query(lessionId);
+            })
+        }else{
+            lessionId = getQueryString('targetId');
+            query(lessionId);
+        }
+
+    //baomingrenshu              
+    $("body").on("tap", ".studentNum", function(){
+        var targetId = lessionId;
+        var baseUrl = "studentNum.html";
+        var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+        mui.openWindow({
+                url: url,
+                extras: {
+                    targetId: targetId
+                }
+        });
+    })
+
+
+    function query(lessionId){
+        var requestData= {
+            lessonID : lessionId
+        }
+        postData(teacherLessonDetailUrl,requestData, function(res){
+                if (res.resultCode == '000000'){
+                    //nameinfo
+                    var nameInfo = res.lesson;
+                    var nameTpl =   '<div class="img-box g-fl">'
+                                    +'<img src="'+ uploadFilePreUrl +nameInfo.lessonPic +'" alt=""></div>'
+                                    +'<div class="info g-fl">'
+                                    +'<p class="g-fs-16 color-black g-bold">'+ res.parentCategoryName +' I '+ nameInfo.name +'</p>'
+                                    +'<p class="g-fs-16 color-orange">￥'+ nameInfo.price +'</p>'
+                                    +'<p class="g-fs-12 color-grey">'+ nameInfo.classHour +' 课时</p></div>'
+                    $(".class-banner").append(nameTpl);
+                    //baomingrenshu
+                    $(".num-info").text(nameInfo.studentNum);
+                    //video
+                    var videoData = res.videoList;
+                    for(var i=0; i<videoData.length; i++){
+                        var tpl =  '<div class="video-box g-fl"><img src="'+ videoData[i].videoPicReqUrl +'" alt=""></div>'
+                        $(".videoList").append(tpl);
+                    }
+                    
+                    var courselVal = ""
+                    if(nameInfo.courseLevel == 1){
+                        courselVal = "入门"
+                    }else if(nameInfo.courseLevel == 2){
+                        courselVal = "中级"
+                    }else if(nameInfo.courseLevel == 3){
+                        courselVal = "高级"
+                    }else if(nameInfo.courseLevel == 24){
+                        courselVal = "演奏级"
+                    }
+
+                    var infoTpl =  '<div class="title-box">课程详情</div>'
+                                   +' <p>课程类别：'+ res.parentCategoryName +'/'+ nameInfo.lessonCategoryName +'</p>'
+                                   +'<p>课程级别：'+ courselVal +'</p>'
+                                   +'<p>课程人数：'+ nameInfo.maxSignUpNums +'人</p>'
+                                   +'<p>课程时间：'+ nameInfo.classHourLength +'分钟</p>'
+                                   +'<p>课程简介：</p>'
+                                   +'<p>'+ nameInfo.lessonDesc +'</p>'
+                    $(".class-info").append(infoTpl)
+
+                    $(".createTime").text(nameInfo.createTime);
+                }else{
+                    mui.toast(res.desc);
+                }
+            });
+    }
+
+    // mui('body').on('tap','a',function(){
+    //     window.top.location.href=this.href;
+    // });
+
+    mui("#TeacherDeleteLesson")[0].addEventListener('tap', function(){
+            var requestData = {
+                lessonID : lessionId
+            }
+            postData(delPubKcUrl,requestData, function(res){
+                    if (res.resultCode == '000000'){
+                        mui.toast("删除课程成功");
+                        mui.openWindow({
+                                        url: 'myPublishKc.html',
+                                        id: 'myPublishKc.html'
+                                })
+                    }else{
+                        mui.toast(res.desc);
+                    }
+            });
+    })
+
+    mui("#TeacherModifyLesson")[0].addEventListener('tap', function(){
+            var targetId = lessionId;
+            var baseUrl = "publishKc.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+                    url: url,
+                    extras: {
+                        targetId: targetId
+                    }
+            });
+    })
+
+    $("body").on("tap", ".videoList", function(){
+            var targetId = lessionId;
+            var baseUrl = "videoList.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+                    url: url,
+                    extras: {
+                        targetId: targetId
+                    }
+            });
+    })
+    
+});
+
+
+</script>
+
+</html>

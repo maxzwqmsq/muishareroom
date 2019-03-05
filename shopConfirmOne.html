@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+	<link rel="stylesheet" href="css/mui.min.css"/>
+	<link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/teacher/teacher.css">
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">门店认证</h1>
+	</header>
+    <div class="teacher-box mt44">
+        <section class="stepshop-box clearfix">
+            <div class="step-shopitem g-fl g-text-center active">1.上传门店信息
+                <span class="mui-icon mui-icon-arrowright"></span>
+            </div>
+            <div class="step-shopitem g-fl g-text-center">2.提交资料</div>
+        </section>
+
+        <div class="main-box">
+            <div class="title-box g-fs-15 color-grey">门店信息图片</div>
+            <div class="upload-btn mtop">
+                <div class="img-box">
+                    <img class="business" src="./img/upload-img.png" alt="">
+                </div>
+                <p>上传营业执照</p>
+            </div> 
+        </div>
+        <a  id="shopNextStep" class="big-button big-orange">下一步</a>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+			swipeBack: true
+        });
+    mui.plusReady(function(){
+		// shopAuthInfoUrl
+		 postData(shopAuthInfoUrl, {}, function(res){
+		    //需要确认返回状态码
+		            if (res.resultCode == '000000'){
+						console.log(res);
+		               
+		            }
+		            else
+		            {
+		                mui.toast(res.desc);
+		            }
+		    })
+		
+		
+        var businessLicenseUrl =""
+        fileTool.options.uploadUrl = uploadUrl;
+
+        mui(".business")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}, {
+							title: '拍照'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(fmdoFiles);
+						} else if (e.index == 2) {
+							fileTool.camera(fmdoFiles);
+						}
+					}
+            );
+        })
+
+        function fmdoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				
+				fileTool.imgUpload(files,function(err,res){
+                    var imgurl = uploadFilePreUrl + res;
+                    //传值与修改图片
+					businessLicenseUrl = res;
+					$(".business").attr("src", imgurl);
+				});
+				if (files.length > 0) {}
+        }
+        
+        var shopNextStep = document.getElementById("shopNextStep");
+        shopNextStep.addEventListener("tap",function(){
+            if(!!businessLicenseUrl){
+                mui.openWindow({
+                                    url:'shopConfirmTwo.html',
+                                    id:'shopConfirmTwo.html',
+                                    extras:  {
+                                        businessLicenseUrl: businessLicenseUrl
+                                            }
+                                });
+            }else{
+                mui.toast("上传营业执照失败")
+            }
+        })
+
+
+    })
+</script>
+
+</html>

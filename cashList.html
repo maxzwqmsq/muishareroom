@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/mine/cash.css">
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">账户余额</h1>
+	</header>
+    <div class="cash-box mt44">
+        <div class="title-cash clearfix">
+            <span class="g-fs-16 color-grey g-fl">账户余额</span>
+            <span class="g-fs-16 color-orange g-fr"></span>
+        </div>
+        <div class="cash-li">
+            <!-- <div class="cash-item clearfix border-li">
+                <div class="g-fl">
+                    <p class="g-fs-16 color-grey">分成</p>
+                    <p class="g-fs-13 color-deepgrey">2017-04-18 22:44:46</p>
+                </div>
+                <div class="g-fr num">
+                    +110
+                </div>
+            </div>
+
+            <div class="cash-item clearfix border-li">
+                <div class="g-fl">
+                    <p class="g-fs-16 color-grey">分成</p>
+                    <p class="g-fs-13 color-deepgrey">2017-04-18 22:44:46</p>
+                </div>
+                <div class="g-fr num">
+                    +110
+                </div>
+            </div>
+
+            <div class="cash-item clearfix border-li">
+                <div class="g-fl">
+                    <p class="g-fs-16 color-grey">分成</p>
+                    <p class="g-fs-13 color-deepgrey">2017-04-18 22:44:46</p>
+                </div>
+                <div class="g-fr num">
+                    +110
+                </div>
+            </div> -->
+        </div>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: false
+    });
+    mui.ready(function(){
+       var userId = localStorage.getItem('userId') 
+       //getCashList
+       var data = {
+                    "undefined": ""
+                }
+        postData(casListUrl, data, function(res){
+            if(res.resultCode == "000000"){
+                var list = res.list;
+                $(".cash-li").empty();
+                for(var i=0; i<list.length; i++){
+                    var tpl = '<div class="cash-item clearfix border-li"><div class="g-fl">'
+                            +'<p class="g-fs-16 color-grey">分成</p>'
+                            +'<p class="g-fs-13 color-deepgrey">'+ list[i].createTimeStr +'</p></div>'
+                            +'<div class="g-fr num">+'+ list[i].num +'</div></div>'
+                    $(".cash-li").append(tpl)
+                }
+            }
+        })
+
+        //余额
+        postData(userUrl, data, function(res){
+            if(res.resultCode == "000000"){
+				
+                var points = res.user.balance ;
+                $(".color-orange").text(points);
+            }
+        })
+
+
+    })
+</script>
+
+</html>

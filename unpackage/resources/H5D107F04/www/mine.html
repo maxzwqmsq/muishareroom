@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/commen.css" />
+    <link rel="stylesheet" href="css/mine/index.css">
+    
+</head>
+<body>
+<!-- <header class="mui-bar mui-bar-transparent">
+        <h1 class="mui-title">我的</h1>
+</header> -->
+<div class="mine-index padding-bot">
+    <section class="mine-banner">
+        <div class="box">
+            <img src="img/mine/mine-banner.png" alt="">
+            <div class="info-box clearfix">
+                <div class="mine-img g-fl"></div>
+                <div class="g-fl info">
+                    <p class="g-fs-18"></p>
+                    <p class="g-fs-12"><img src="img/mine/mine-lv.png" alt=""> 一级会员</p>
+                </div>
+                <i class="mui-icon mui-icon-arrowright g-fs-22"></i>
+            </div>
+
+            <div class="box-banner">
+                    <p class="g-fs-20 g-bold color-orange"></p>
+                    <p class="g-fs-12 color-black">余额</p>
+                    <div class="clearfix">
+                        <div id="gotoCashList" class="small-button bg-orange g-fl">
+                            充值
+                        </div>
+                        <div id="gotoGetCash" class="small-button bg-orange g-fr">
+                            提现
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </section>
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+           <img src="img/mine/mine-01.png" alt=""> 
+           <a href="msgList.html" class="mui-navigate-right g-fs-15">消息中心
+               
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-02.png" alt=""> 
+            <a href="teacherConfirmOne.html" class="mui-navigate-right g-fs-15">老师认证
+                <!-- <span class="g-fr">已认证</span> -->
+								<span class="g-fr color-orange">未认证</span>
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-03.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">门店认证
+								<!-- <span class="g-fr">已认证</span> -->
+								<span class="g-fr color-orange">未认证</span>
+						</a>
+        </li>
+    </ul>
+
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-04.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">我发布的课程
+               
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-05.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">我购买的课程
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-06.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">我的视频</a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-07.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">我的订单</a>
+        </li>
+    </ul>
+
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-08.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">系统设置
+               
+            </a>
+        </li>
+        <li class="mui-table-view-cell">
+                <img src="img/mine/mine-09.png" alt=""> 
+            <a class="mui-navigate-right g-fs-15">关于我们
+                
+            </a>
+        </li>
+    </ul>
+</div>
+
+<section class="tab-main clearfix">
+    <a href="home.html" class="tab-item">
+        <i class="tab-icon tab-index"></i>
+    
+        <p>首页</p>
+    </a>
+    <a href="answers.html" class="tab-item">
+            <i class="tab-icon tab-answer"></i>
+        <p>问答</p>
+    </a>
+    <a href="article.html" class="tab-item">
+            <i class="tab-icon tab-article"></i>
+        <p>文章</p>
+    </a>
+    <a href="mine.html" class="tab-item">
+            <i class="tab-icon tab-mine-active"></i>
+        <p class="color-orange">我的</p>
+    </a>
+</section>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true
+    });
+
+
+    // var webview_detail = null; //详情页webview
+    // var titleNView = { //详情页原生导航配置
+    //     backgroundColor: '#f7f7f7', //导航栏背景色
+    //     titleText: '', //导航栏标题
+    //     titleColor: '#000000', //文字颜色
+    //     type: 'transparent', //透明渐变样式
+    //     autoBackButton: true, //自动绘制返回箭头
+    //     splitLine: { //底部分割线
+    //         color: '#cccccc'
+    //     }
+    // }
+
+    // mui.plusReady(function() {
+    //         //预加载详情页
+    //     webview_detail = mui.preload({
+    //         url: 'studentDetail.html',
+    //         id: 'studentDetail',
+    //         styles: {
+    //             "render": "always",
+    //             "popGesture": "hide",
+    //             "bounce": "vertical",
+    //             "bounceBackground": "#efeff4",
+    //             "titleNView": titleNView
+    //         }
+    //     });
+    // });
+
+    // function open_detail() {
+    //     var item = {
+    //         guid: "1",
+    //         title: '2',
+    //         author: "3",
+    //         time: "4",
+    //         cover: "5"
+    //     }
+    //         //触发子窗口变更新闻详情
+    //     mui.fire(webview_detail, 'get_detail', {
+    //         guid: item.guid,
+    //         title: item.title,
+    //         author: item.author,
+    //         time: item.time,
+    //         cover: item.cover
+    //     });
+
+    //     //更改详情页原生导航条信息
+    //     titleNView.titleText = item.title;
+    //     webview_detail.setStyle({
+    //         "titleNView": titleNView
+    //     });
+    //     setTimeout(function() {
+    //         webview_detail.show("slide-in-right", 300);
+    //     }, 150);
+    // }
+
+
+    mui.ready(function(){
+        var userData = {};
+        postData(userUrl, userData, function(res){
+            if(res.resultCode == "000000"){
+                var detailData = res.user;
+                $("p.g-fs-18").text(res.user.nickName);
+                $("p.g-bold").text(res.user.balance);
+                
+            }else{
+                mui.toast(res.desc)
+            }
+        })
+        
+        mui('.info-box').on('tap','div',function(){
+            mui.openWindow({
+                url:'studentDetail.html',
+                id:'studentDetail.html',
+                extras: {
+                    detail: ""   
+                },
+                createNew: false
+            });
+        });
+
+        mui('#gotoGetCash')[0].addEventListener("tap", function(){
+            mui.openWindow({
+                url:'getCash.html',
+                id:'getCash.html',
+                extras: {
+                    detail: ""   
+                },
+                createNew: false
+            });
+        })
+        
+        mui('#gotoCashList')[0].addEventListener("tap", function(){
+            mui.openWindow({
+                url:'cashList.html',
+                id:'cashList.html',
+                extras: {
+                    detail: ""   
+                },
+                createNew: false
+            });
+        })
+        
+
+    })
+</script>
+</html>

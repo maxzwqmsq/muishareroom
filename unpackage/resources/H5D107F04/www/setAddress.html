@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/mine/address.css">
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">设置地址</h1>
+	</header>
+    <div class="address-set mt44">
+        <div class="item-set border-li clearfix">
+            <span class="g-fl g-fs-15 color-grey">地址</span>
+            <p class="g-fr g-fs-14 color-grey">
+                <img src="img/address-local.png" alt="">
+                <span id="addressId"></span>
+                <img class="ml-5" src="img/adres-right.png" alt="">
+            </p>
+        </div>
+        <div class="item-change border-li clearfix">
+            <span class="g-fl g-fs-15 color-grey">请输入详细地址</span>
+            <input class="color-grey g-fs-14 g-fr" type="text" placeholder="例：10号楼233室">
+        </div>
+
+        <div class="chose-type clearfix">
+            <span class="g-fl g-fs-15">标签</span>
+            <p class="g-fr js-chose">
+                <a href="###" class="small-button home default-button bg-orange">家</a>
+                <a href="###" class="small-button com default-button">公司</a>
+                <a href="###" class="small-button school default-button">学校</a>
+            </p>
+        </div>
+
+        <div class="big-button big-orange">
+            保存
+        </div>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="js/mui.min.js"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+    $(function(){
+        $(".js-chose a").click(function(){
+            $(this).addClass("bg-orange").siblings().removeClass("bg-orange");
+        })
+    })
+    var requestData ={
+        province : "江苏省",
+        city : "南京市",
+        area : "江宁区",
+        isDefault : 1,
+        addressDetail :"软件大道",
+        label : "公司"
+    };
+    $(document).ready(function() {
+        postData(setAddressUrl,requestData, function(res){
+				if (res.resultCode == '000000')
+				{
+                    $("#addressId").text( requestData.province + requestData.city + requestData.area );
+                    $("input").val( requestData.addressDetail );
+                    if(requestData.label=="家"){        
+                        $(".home").addClass("bg-orange");
+                        $(".com").removeClass("bg-orange");
+                        $(".school").removeClass("bg-orange");
+                    }else if(requestData.label=="公司"){        
+                        $(".com").addClass("bg-orange");
+                        $(".home").removeClass("bg-orange");
+                        $(".school").removeClass("bg-orange");
+                    }else if(requestData.label=="学校"){        
+                        $(".school").addClass("bg-orange");
+                        $(".com").removeClass("bg-orange");
+                        $(".home").removeClass("bg-orange");
+                    }
+                }
+				else
+				{
+					msgTip("获取数据失败");
+				}
+        });
+    })
+</script>
+
+</html>

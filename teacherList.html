@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/swiper.min.css"/>
+    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/commen.css" />
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">老师列表</h1>
+    </header>
+    <div class="mui-off-canvas-wrap mui-draggable mui-slide-in mt44">
+            <aside class="mui-off-canvas-right">
+                    <div class="mui-scroll-wrapper">
+                        <div class="mui-scroll">
+                            <!-- 菜单具体展示内容 -->
+                            <a href="javascipt:vold(0);#" class="input-search clearfix">
+                                <div class="g-fl"><span class="mui-icon mui-icon-search"></span>
+                                    <input id="teacherVal" type="text" placeholder="查询老师名称和课程"></div>
+                                <span class="g-fr closeDraggable">取消</span>
+                            </a>
+                            <section>
+                                <div class="title">
+                                    排序规则
+                                </div>
+                                <div class="list border-li pxgz">
+                                    <!-- <a href="javascipt:vold(0);" class="small-button default-button">好感度</a> -->
+                                    <a href="javascipt:vold(0);" class="small-button default-button bg-orange">价格</a>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="title-history">
+                                    历史搜索    <span class="g-fr btn-del"><img src="./img/del-img.png" alt=""> 清空</span>
+                                </div>
+                                <div class="list-info">
+                                    <a href="javascipt:vold(0);" class="history-btn">好感度</a>
+                                    <a href="javascipt:vold(0);" class="history-btn">价格</a>
+                                    <a href="javascipt:vold(0);" class="history-btn">价格</a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+            </aside>
+        <div class="mui-inner-wrap ">
+                <div class="mui-content mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <div class="index-box padding-bot">
+                            <section class="banner newbanner">
+                                <div class="swiper-container">
+                                    <div class="swiper-wrapper">
+                                    </div>
+                                    <!-- Add Pagination -->
+                                    <div class="swiper-pagination"></div>
+                                </div>
+                            </section>
+                            <div class="info-box clearfix padding-20">
+                                <span class="g-fr g-fs-15 color-grey select-btn">
+                                        筛选<img src="img/set-img.png" alt="">
+                                </span>
+                            </div>
+                            <div id="refresh">
+                                <section class="teacher-box">
+                                    <div class="teacher-list">
+                                    </div>
+                                </section>
+                             </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script src="js/swiper.min.js"></script>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+ mui.ready(function() {  
+        mui.init({ 
+            swipeBack: false,
+            pullRefresh : {
+                        container: "#refresh",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+                        up : {
+                                height: 100,//可选.默认50.触发上拉加载拖动距离
+                                auto: false,//可选,默认false.自动上拉加载一次
+                                contentrefresh: "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+                                contentnomore: '没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+                                callback: query //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                            }
+                    }
+        });
+
+        var count = 1;
+        var categoryId = ""
+        if(mui.os.plus){
+            mui.plusReady(function () {
+                var self = plus.webview.currentWebview();
+                categoryId = self.targetId;
+                query();
+            })
+        }else{
+            var targetId = getQueryString('targetId');
+            categoryId = targetId;
+            query();
+        }
+
+        $(".select-btn").on('tap', function(){
+            mui('.mui-off-canvas-wrap').offCanvas().show();
+        })
+        
+        $(".closeDraggable").on("tap", function(){
+            mui('.mui-off-canvas-wrap').offCanvas().close();
+            var tpl = '<a href="javascipt:vold(0);" class="history-btn">'+ $(".teacherVal").val() +'</a>';
+            $(".list-info").append(tpl);
+            var orderByInfo = $(".bg-orange").text()== "好感度" ? "favorableRate" : "price";
+            var info = $("#teacherVal").val();
+            query();
+        })
+
+        $(".pxgz").on("tap", "a", function(){
+            $(this).addClass("bg-orange").siblings().removeClass("bg-orange");
+        })
+
+        $(".list-info").on("tap", "a", function(){
+            var text = this.innerHTML;
+            $("#teacherVal").val(text);
+        })
+
+        $(".btn-del").on("tap", function(){
+            $(".list-info").empty();
+        })
+
+         //go teacher detail
+        mui(".teacher-list").on("tap", ".gotodetail", function() {
+            var targetId = this.getAttribute("id");
+            var baseUrl = "teacherDetail.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+            url: url,
+            extras: {
+                targetId: targetId
+            }
+            });
+        });
+
+       
+
+        // banner
+        var name = "";
+        postData(bannerListUrl, name, function(res) {
+            if (res.resultCode == "000000") {
+                var data = res.dataList;
+                for (var i = 0; i < data.length; i++) {
+                    var tpl =
+                    '<div class="swiper-slide"><img src="' +
+                    data[i].coverRequestUrl +
+                    '" alt=""></div>';
+                    $(".swiper-wrapper").append(tpl);
+                }
+                var swiper = new Swiper(".swiper-container", {
+                    pagination: {
+                    el: ".swiper-pagination"
+                    }
+                });
+            } else {
+                mui.toast(res.desc);
+            }
+        });
+ 
+        
+        function query(){
+            var requestData = {
+                            lessonCategoryID: "",
+                            shopID: "",
+                            subCategoryId: "",
+                            orderMethod: 1,
+                            orderBy: "",
+                            pageSize: 10,
+                            pageNO: 0
+                        }
+            requestData.subCategoryId = categoryId;    
+            var orderByInfo = $(".bg-orange").text() == "好感度"? "favorableRate":"price";
+            requestData.orderBy = orderByInfo;
+            var info = $("#teacherVal").val();
+            requestData.pageNO = count++;
+
+            postData(teacherListUrl, requestData, function(res){
+                var resultCode = res.resultCode;
+                if (resultCode == '000000')
+				{   
+                    setTimeout(nextRefresh, 1500); 
+                    function nextRefresh() {	
+                        mui('#refresh').pullRefresh().endPullupToRefresh(listData.length==0); 
+                    }
+
+                    var listData = res.teacherModel;
+                    //mockdata
+                    for(var i=0;i<listData.length; i++){
+                        var tpl =  ' <ul id="'+ listData[i].id +'" class="gotodetail"><li class="pad-0 mg-b">'
+                                    +' <div class="box border-li pad-10">'
+                                    +' <div class="img-box g-fl">'
+									+' <img src="'+listData[i].portraitRequestUrl+'"  alt="">'
+                                    +' <img src="img/index-lv.png" class="lv-box" alt="">'
+                                    +' </div>'
+                                    +' <div class="info-item">'
+                                    +' <p class="g-fs-16 color-black g-bold name">'+ listData[i].nickName +'<span>'
+                                    +' <img src="img/skill-img.png" alt="" srcset="">'
+                                    +' <img src="img/study-img.png" alt="" srcset="">'
+                                    +' </span>'
+                                    +' </p>'
+                                    +' <p class="g-fs-12 color-grey clearfix">'+ listData[i].lessonCategory +'<span class="color-orange g-fr g-fs-16">'
+                                    +' <i class="g-fs-12">￥</i>'+ listData[i].price +'<span class="g-fs-12">/课时起</span></span>'
+                                    +' </p>'
+                                    +' </div>'
+                                    +' </div>'
+                                    +' <div class="bottom clearfix">'
+                                    +' <span class="g-fl g-fs-12 color-grey">'+ listData[i].graduate +'</span>'
+                                    +' <span class="g-fr g-fs-12 color-grey">'+ listData[i].teachingAge +'年教龄</span>'
+                                    +' </div>'
+                                    +' </li></ul>'
+                        $(".teacher-list").append(tpl);
+                    }
+                    
+				}
+				else
+				{
+                    mui.toast(res.desc);
+				}
+            });
+        }
+    
+       
+			
+			
+		});
+
+</script>
+
+</html>

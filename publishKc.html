@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/commen.css">
+		<link rel="stylesheet" href="css/teacher/teacher.css">
+		<link rel="stylesheet" href="css/mui.picker.css" />
+		<link rel="stylesheet" href="css/mui.poppicker.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">发布课程</h1>
+		</header>
+		<div class="teacher-box mt44">
+			<ul class="mui-table-view mgno">
+				<li class="mui-table-view-cell g-fs-15">
+					<a id="lessonBtn" class="mui-navigate-right">课程类型
+						<span class="g-fr parentCategoryID">电吉他</span>
+						<span class="g-fr" style="padding-right: 0;">-</span>
+						<span class="g-fr lessonCategoryID" style="padding-right: 0;">吉他</span>
+					</a>
+				</li>
+
+				<li class="mui-table-view-cell g-fs-15">课程名称
+					<input class="g-fr name" placeholder="请输入课程名称" type="text">
+				</li>
+
+				<li class="mui-table-view-cell g-fs-15">
+					<a id="courseLevelIdBtn" class="mui-navigate-right">课程级别
+						<span class="g-fr courseLevel">入门</span>
+					</a>
+				</li>
+
+			</ul>
+
+			<section class="fill-info mgno">
+				<div class="fill-title">课程描述</div>
+				<textarea name="" id="lessonDesc" placeholder="请详细填写课程描述"></textarea>
+				<div class="upload-class">
+					<img class="lessonPicList" src="./img/upload-img.png" alt="">
+				</div>
+			</section>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell g-fs-15">
+					<a id="classHourBtn" class="mui-navigate-right">课时
+						<span class="g-fr">课时</span>
+						<span class="g-fr classHour" style="padding-right: 0;">0</span>
+					</a>
+				</li>
+
+				<li class="mui-table-view-cell g-fs-15">
+					<a class="mui-navigate-right">价格
+						<!-- <span class="g-fr">100</span> -->
+						<input class="g-fr price" placeholder="请输入价格" type="text">
+						<!-- <span class="g-fr" style="padding-right: 0;">¥</span> -->
+					</a>
+				</li>
+
+
+				<li class="mui-table-view-cell g-fs-15">
+					<a id="classHourLengthBtn" class="mui-navigate-right">课时时长
+						<span class="g-fr classHourLength">45分钟</span>
+					</a>
+				</li>
+
+			</ul>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell g-fs-15">
+					<a id="shopIdBtn" class="mui-navigate-right">门店
+						<span class="g-fr shopID">请选择</span>
+					</a>
+				</li>
+
+			</ul>
+			<!-- fixed-bottom 底部固定类名，去除可以变成流式布局-->
+			<div class="class-button fixed-bottom">
+				<a href="javascipt:vold(0);" class="g-fl bccg">
+					保存草稿
+				</a>
+				<a href="javascipt:vold(0);" class="g-fl qrfb">
+					确认发布
+				</a>
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+	<script src="js/config.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+	<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+	<script src="js/base/mui.poppicker.js"></script>
+	<script src="js/base/mui.picker.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview();
+					// query(self.targetId);
+				})
+			} else {
+				var targetId = getQueryString('targetId');
+
+			}
+
+			window.addEventListener('getData', function(event) {
+				//获得事件参数
+				$(".shopID").text(event.detail.shopname);
+				$(".shopID").attr("data-id",event.detail.shopid)
+
+			});
+			$(".shopID").click(function() {
+				mui.openWindow({
+					url: "shoplist.html"
+				})
+			})
+
+			function query(lessionId) {
+				var requestData = {
+					lessonID: lessionId
+				}
+				postData(teacherLessonDetailUrl, requestData, function(res) {
+					if (res.resultCode == '000000') {
+						var kcInfo = res.lesson;
+						$(".parentCategoryID").text(res.parentCategoryName);
+						$(".lessonCategoryID").text(kcInfo.lessonCategoryName);
+						$(".name").val(kcInfo.name);
+						var courselVal = ""
+						if (kcInfo.courseLevel == 1) {
+							courselVal = "入门"
+						} else if (kcInfo.courseLevel == 2) {
+							courselVal = "中级"
+						} else if (kcInfo.courseLevel == 3) {
+							courselVal = "高级"
+						} else if (kcInfo.courseLevel == 24) {
+							courselVal = "演奏级"
+						}
+						$(".courseLevel").text(courselVal);
+						$(".price").val(kcInfo.price);
+						$(".classHourLength").text(kcInfo.classHourLength + "分钟");
+						$("#lessonDesc").val(kcInfo.lessonDesc);
+					} else {
+						mui.toast(res.desc)
+					}
+				})
+			}
+
+
+
+
+			fileTool.options.uploadUrl = uploadUrl;
+
+			var lessonPicListArry = [];
+
+			mui(".lessonPicList")[0].addEventListener("tap", function() {
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}, {
+							title: '拍照'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(fmdoFiles);
+						} else if (e.index == 2) {
+							fileTool.camera(fmdoFiles);
+						}
+					}
+				);
+			})
+
+			function fmdoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+
+				fileTool.zoomImage(files[0], function(err, res) {
+					var arr = [];
+					arr.push(res);
+					fileTool.imgUpload(arr, function(err, res) {
+						var imgurl = uploadFilePreUrl + res;
+						//传值与修改图片
+						lessonPicListArry.push(res);
+						$(".lessonPicList").attr("src", imgurl);
+					});
+				})
+
+				if (files.length > 0) {}
+			}
+
+
+
+
+			mui('.bccg')[0].addEventListener("tap", function() {
+				save(1);
+			})
+			mui('.qrfb')[0].addEventListener("tap", function() {
+				save(2);
+			})
+
+			function _arryFommart(arry) {
+				var result = [];
+				for (var j = 0; j < arry.length; j++) {
+					result.push({
+						text: arry[j].name,
+						value: arry[j].id
+					})
+				}
+				return result;
+			}
+
+			//kechengfenlei
+			var fenleiData = {
+
+			}
+			postData(teacherclassURL, fenleiData, function(res) {
+				if (res.resultCode == "000000") {
+					var middle = [];
+					var orgin = res.dataList;
+					for (var i = 0; i < orgin.length; i++) {
+						middle.push({
+							text: orgin[i].name,
+							value: orgin[i].id,
+							children: _arryFommart(orgin[i].childCategory)
+						})
+					}
+
+					var lessonPicker = new mui.PopPicker({
+						layer: 2
+					});
+					lessonPicker.setData(middle);
+					var showlessonPickerButton = document.getElementById('lessonBtn');
+					showlessonPickerButton.addEventListener('tap', function(event) {
+						lessonPicker.show(function(items) {
+							$(".parentCategoryID").text(items[0].text);
+							$(".parentCategoryID").attr("data-id", items[0].value)
+							$(".lessonCategoryID").text(items[1].text);
+							$(".lessonCategoryID").attr("data-id", items[1].value)
+						});
+					}, false);
+				} else {
+					mui.toast(res.desc)
+				}
+
+			})
+
+
+
+			//kecheng dengji
+			var courseLevelPicker = new mui.PopPicker();
+			courseLevelPicker.setData([{
+				value: '1',
+				text: '入门'
+			}, {
+				value: '2',
+				text: '中级'
+			}, {
+				value: '3',
+				text: '高级'
+			}, {
+				value: '4',
+				text: '演奏级'
+			}])
+			var showcourseLevelPickerButton = document.getElementById('courseLevelIdBtn');
+			showcourseLevelPickerButton.addEventListener('tap', function(event) {
+				courseLevelPicker.show(function(items) {
+					$(".courseLevel").text(items[0].text);
+					$(".courseLevel").attr("data-id", items[0].value)
+				});
+			}, false);
+
+			// classHourBtn
+			var classHourBtnPicker = new mui.PopPicker();
+			classHourBtnPicker.setData([{
+				value: '10',
+				text: '10'
+			}, {
+				value: '20',
+				text: '20'
+			}])
+			var showclassHourBtnPickerButton = document.getElementById('classHourBtn');
+			showclassHourBtnPickerButton.addEventListener('tap', function(event) {
+				classHourBtnPicker.show(function(items) {
+					$(".classHour").text(items[0].text);
+				});
+			}, false);
+
+			// classHourLengthBtn
+			var classHourLengthBtnPicker = new mui.PopPicker();
+			classHourLengthBtnPicker.setData([{
+				value: 45,
+				text: "45分钟"
+			}, {
+				value: 60,
+				text: "60分钟"
+			}])
+			var showclassHourLengthBtnPickerButton = document.getElementById('classHourLengthBtn');
+			showclassHourLengthBtnPickerButton.addEventListener('tap', function(event) {
+				classHourLengthBtnPicker.show(function(items) {
+					$(".classHourLength").text(items[0].text);
+					$(".classHourLength").attr("data-id", items[0].value)
+				});
+			}, false);
+
+			function save(statusNum) {
+				var saveData = {
+					"name": $(".name").val(),
+					"courseLevel": $(".courseLevel").data("id"),
+					"classHour": $(".classHour").text(),
+					"lessonDesc": $("#lessonDesc").val(),
+					"lessonPicList": "",
+					"price": parseFloat($(".price").val()),
+					"classHourLength": $(".classHourLength").data("id"),
+					"status": statusNum,
+					"lessonCategoryID": $(".lessonCategoryID").data("id"),
+					"parentCategoryID": $(".parentCategoryID").data("id"),
+					"lessonID": "",
+					"shopID": $(".shopID").data("id")
+				};
+				saveData.lessonPicList = lessonPicListArry;
+				postData(saveLessonUrl, saveData, function(res) {
+					if (res.resultCode == "000000") {
+						if (statusNum == 1) {
+							mui.toast("暂存成功！")
+						} else {
+							mui.toast("发布成功！");
+						}
+
+						mui.openWindow({
+							url: "mine.html",
+							id: "mine.html"
+						});
+					} else {
+						mui.toast(res.desc)
+					}
+				})
+			}
+
+		})
+	</script>
+
+</html>

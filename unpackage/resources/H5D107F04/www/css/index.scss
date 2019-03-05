@@ -1,0 +1,244 @@
+$vm_base: 375; 
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+.index-box{
+    .banner{
+        width:100%;
+        height:vw(228);
+        .swiper-container {
+            width:100%;
+            height:vw(228);
+            img{
+                width:100%;
+                height: 100%;
+            }
+        }
+        .swiper-pagination-bullet {
+            width: vw(8);
+            height: vw(8);
+            display: inline-block;
+            border-radius: 100%;
+            background: #fff;
+            opacity: .4;
+        }
+
+        .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #fff;
+        }
+        
+    }
+
+    .newbanner{
+        height:vw(135);
+        .swiper-container{
+            height:vw(135);
+        }
+    }
+
+    .link-box{
+        background:#fff;
+        padding:0 vw(15);
+        padding-bottom:vw(15);
+        a{  padding-top:vw(15);
+            display: inline-block;
+            width:25%;
+            float:left;
+            text-align:center;
+            img{
+                width:vw(45);
+                height:vw(45);
+                
+            }
+            span{
+                display: block;
+                text-align: center;
+            }
+
+        }
+    }
+    .info-box{
+        width:100%;
+        height:vw(46);
+        line-height: vw(46);
+        padding:0 vw(20);
+        background:#fff;
+        img{
+            width:vw(12);
+            margin-left:vw(5);
+        }
+    }
+    .teacher-box{
+       
+        margin-top:vw(10);
+        .head-box{
+            height:vw(40);
+            line-height: vw(40);
+            img{
+                width: vw(12);
+                margin-left:vw(5);
+                vertical-align: vw(-1);
+            }
+        }
+        .teacher-list{
+            ul{
+                li{   
+                    background: #fff;  
+                    padding:vw(10) vw(15);
+                    .img-box{
+                        width:vw(60);
+                        height:vw(60);
+                        border-radius: 100%;
+                        // overflow: hidden;
+                        margin-right: vw(20);
+                        background:red;
+                        img{
+                            width:100%;
+                            height: 100%;
+                        }
+                        position: relative;
+                        .lv-box{
+                            position: absolute;
+                            left:50%;
+                            bottom:vw(-4);
+                            width: vw(34);
+                            height: vw(19);
+                            transform: translate(-50%,0)
+                        }
+                    }
+                    .info-item{
+                        overflow: hidden;
+                        .name{
+                            height:vw(40);
+                            span{
+                                margin-left:vw(10);
+                                vertical-align: top;
+                                display: inline-block;
+                                img{
+                                    width:vw(18);
+                                    
+                                }
+                            }
+                           
+                        }
+                    }
+                    .bottom{
+                        height:vw(22);
+                        line-height: vw(22);
+                        padding:0 vw(20);
+                    }
+                }
+                .pad-0{
+                   
+                    padding:vw(10) 0 0 0;
+                }
+                .pad-10{
+                   
+                    padding:0 vw(20);
+                    padding-bottom:vw(10);
+                    box-sizing: border-box;
+                }
+                .mg-b{
+                    margin-bottom:  vw(10);
+                }
+            }
+        }
+    }
+ 
+}
+
+.mui-off-canvas-right{
+  
+    background:#fff;
+    width:80%;
+    .input-search{
+        display: block;
+        padding:vw(20);
+       
+        div{
+            height:vw(30);
+            .mui-icon{
+                color: #333;
+                margin-left:vw(10);
+            }
+            background: rgba(239,239,239,0.50);
+            width:vw(220);
+            overflow: hidden;
+            border-radius: vw(30);
+            input{
+                font-size: vw(12);
+                width:vw(180);
+                height:vw(30);
+                border: none;
+                margin:0;
+                background:transparent;
+               padding:0;
+            }
+            
+        }
+        span{
+            color:#333;
+            line-height:vw(30);
+        }
+    }
+    .title{
+        padding:0 vw(20);
+        font-size: vw(14);
+        color: #4A4A4A;
+    }
+    .list{
+        padding:vw(20);
+        height:vw(160);
+        .small-button{
+            width:vw(90);
+            margin-right:vw(20);
+        }
+    }
+    .title-history{
+        padding:vw(10) vw(20);
+        font-size: vw(14);
+        color: #4A4A4A;
+        .btn-del{
+            img{
+                width:vw(10);
+                margin-left:vw(8);
+                margin-right:vw(2);
+                margin-top:vw(4);
+            }
+            width: vw(60);
+            height: vw(24);
+            border: vw(1) solid #9B9B9B;
+            border-radius: vw(100);
+            font-size: vw(10);
+            line-height: vw(24);
+        }
+    }
+
+    .list-info{
+        padding:0 vw(20);
+        .history-btn{
+            display: inline-block;
+            width:vw(112);
+            background: rgba(239,239,239,0.50);
+            border-radius: vw(100);
+            height: vw(30);
+            line-height: vw(30);
+            text-align: center;
+            font-size: vw(13);
+            color: #4A4A4A;
+            margin: vw(5);
+        }
+    }
+}
+
+.people-list{
+    .people-item{
+        background:#fff;
+        .info {
+            padding:vw(10) vw(20);
+        }
+        
+    }
+}
+

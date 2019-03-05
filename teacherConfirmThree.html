@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/teacher/teacher.css">
+    <link rel="stylesheet" href="css/mui.picker.css"/>
+    <link rel="stylesheet" href="css/mui.poppicker.css" />
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-transparent">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">老师认证</h1>
+    </header>
+    <div class="teacher-box mt44">
+        <section class="step-box clearfix">
+            <div class="step-item g-fl g-text-rl">1.上传身份证信息
+                <span class="mui-icon mui-icon-arrowright"></span>
+            </div>
+            <div class="step-item g-fl g-text-center ">2.学历证书
+                <span class="mui-icon mui-icon-arrowright"></span>
+            </div>
+            <div class="step-item g-fl g-text-rt active">3.提交资料</div>
+        </section>
+
+        <ul class="mui-table-view">
+
+            <li class="mui-table-view-cell g-fs-15">老师昵称
+                <input class="g-fr nicKname" placeholder="请输入昵称" type="text">
+            </li>
+            <li class="mui-table-view-cell g-fs-15">毕业院校
+                <input class="g-fr graduate" placeholder="请输入院校名称" type="text">
+            </li>
+            <li class="mui-table-view-cell g-fs-15">所学专业
+                <!-- <a class="mui-navigate-right">
+                    <span class="g-fr major">吉他</span>
+                </a> -->
+                <input class="g-fr major" placeholder="请输入专业名称" type="text">
+            </li>
+            <li class="mui-table-view-cell g-fs-15">
+                <a id="educationBtn" class="mui-navigate-right">学历
+                    <span class="g-fr education">本科</span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell g-fs-15">
+                <a id="categoryIdsBtn" class="mui-navigate-right">授课类型
+                    <span class="g-fr categoryIds">吉他</span>
+                </a>
+            </li>
+            <li class="mui-table-view-cell g-fs-15">
+                <a id="gradeBtn" class="mui-navigate-right">可教授等级
+                    <span class="g-fr grade">高级</span>
+                </a>
+            </li>
+        </ul>
+
+        <section class="fill-info">
+            <div class="fill-title">个人简介</div>
+            <textarea name="" id="introduction" placeholder="请在这输入个人简介…"></textarea>
+        </section>
+
+        <section class="fill-info">
+            <div class="fill-title">课程简介</div>
+            <textarea name="" id="courseDesc" placeholder="请在这输入课程简介…"></textarea>
+        </section>
+
+        <section class="fill-info">
+            <div class="fill-title">获奖情况</div>
+            <textarea name="" id="prizes" placeholder="请在这输入获奖情况…"></textarea>
+        </section>
+
+        <ul class="mui-table-view">
+                <li class="mui-table-view-cell img-li">
+                    <a class="mui-navigate-right showPicList">
+                        <span class="showImg">
+                            <!-- <img src="./img/head-img.png" alt="">
+                            <img src="./img/head-img.png" alt="">
+                            <img src="./img/head-img.png" alt=""> -->
+                        </span>
+                        <span class="g-fr">上传图片</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell img-li">
+                    <a class="mui-navigate-right videoFile">
+                        <img src="./img/head-img.png" alt="">
+                        <!-- <div class="video-box border-li img-box-40"> -->
+                        <!-- <video controls>
+                            <source src="http://vdse.bdstatic.com//0ce574b077682f7525f666fd9700f088?authorization=bce-auth-v1/fb297a5cc0fb434c971b8fa103e8dd7b/2017-05-11T09:02:31Z/-1//d2ed31351b2f374a92f888d18bfeaf7e7ad7594a2dc2a1e18ca5f91384a20a22" type="video/mp4">
+                        </video> -->
+                        <!-- </div> -->
+                        <span class="g-fr">自我宣传视频</span>
+                    </a>
+                </li>
+                <li class="mui-table-view-cell img-li">
+                    <a class="mui-navigate-right showVideo">
+                        <img  src="./img/head-img.png" alt="">
+                        <span class="g-fr">才艺展示视频</span>
+                    </a>
+                </li>
+            </ul>
+        <a href="mine.html" class="big-button big-orange">提交</a>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/base/mui.picker.min.js" type="text/javascript"></script>
+<script src="js/base/mui.poppicker.js" type="text/javascript"></script>
+<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+			swipeBack: true
+    });
+    mui.plusReady(function(){
+        var educationPicker = new mui.PopPicker();
+        educationPicker.setData([{
+                                value: '1',
+                                text: '大专'
+                            }, {
+                                value: '2',
+                                text: '本科'
+                            }, {
+                                value: '3',
+                                text: '硕士'
+                            }, {
+                                value: '4',
+                                text: '博士'
+                            }]);
+        var showUserPickerButton = document.getElementById('educationBtn');
+        var educationResult = $(".education");
+        showUserPickerButton.addEventListener('tap', function(event) {
+           educationPicker.show(function(items) {
+                //get val
+				console.log(educationResult)
+               educationResult.text(items[0].text);
+                //返回 false 可以阻止选择框的关闭
+                //return false;
+            });
+        }, false);
+
+        var categoryIdsPicker = new mui.PopPicker();
+        categoryIdsPicker.setData([{
+                                value: '1',
+                                text: '吉他'
+                            }, {
+                                value: '2',
+                                text: '舞蹈'
+                            }, {
+                                value: '3',
+                                text: '钢琴'
+                            }, {
+                                value: '4',
+                                text: '架子鼓'
+                            }, {
+                                value: '5',
+                                text: '电子琴'
+                            }, {
+                                value: '6',
+                                text: '萨克斯'
+                            }, {
+                                value: '7',
+                                text: '小提琴'
+                            }]);
+        var showUserPickerButton = document.getElementById('categoryIdsBtn');
+        var categoryIdsResult = $('.categoryIds');
+        showUserPickerButton.addEventListener('tap', function(event) {
+           categoryIdsPicker.show(function(items) {
+                //get val
+               categoryIdsResult.text(items[0].text);
+                //返回 false 可以阻止选择框的关闭
+                //return false;
+            });
+        }, false);
+
+        var gradePicker = new mui.PopPicker();
+        gradePicker.setData([{
+                                value: '1',
+                                text: '初级'
+                            }, {
+                                value: '2',
+                                text: '中级'
+                            }, {
+                                value: '3',
+                                text: '高级'
+                            }, {
+                                value: '4',
+                                text: '演奏级'
+                            }]);
+        var showUserPickerButton = document.getElementById('gradeBtn');
+        var gradeResult = $('.grade');
+        showUserPickerButton.addEventListener('tap', function(event) {
+           gradePicker.show(function(items) {
+                //get val
+               gradeResult.text(items[0].text) ;
+                //返回 false 可以阻止选择框的关闭
+                //return false;
+            });
+        }, false);
+        
+
+        //上传多个图片
+        fileTool.options.uploadUrl = uploadUrl;
+        mui(".showPicList")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(showPicListFiles);
+						} 
+					}
+				);
+        })
+        
+        var showImgList = [];
+        function showPicListFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+                }
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+                        var imgurl = uploadFilePreUrl + res;
+                        if(showImgList.length==3){
+                            mui.toast("最多上传三张照片")
+                            return;
+                        }
+                        showImgList.push(res);
+                        var tpl = '<img src="'+ imgurl +'" alt="">'
+                        $(".showImg").append(tpl);
+					});
+				})
+				
+				if (files.length > 0) {}
+		}
+
+        //videoFile自我宣传视频
+        mui(".videoFile")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+					    buttons: [{
+							title: "上传视频"
+						}, {
+							title: '上传视频封面'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(videoFiles);
+						} else if (e.index == 2) {
+							fileTool.galleryImgs(videoPrcFiles);
+						}
+					}
+				);
+        })
+
+        function videoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+                
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+						var imgurl = uploadFilePreUrl + res;
+                        authData.videoFile = res;
+                        // $(".videoFile").attr("src", imgurl);
+					});
+				})
+				if (files.length > 0) {}
+        }
+        
+        function videoPrcFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+                
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+						var imgurl = uploadFilePreUrl + res;
+                        $(".videoFile").find("img").attr("src", imgurl);
+					});
+				})
+				
+				if (files.length > 0) {}
+		}
+
+        //showVideo 才艺展示视频
+        mui(".showVideo")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "上传视频"
+						}, {
+							title: '上传视频封面'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(showvideoFiles);
+						} else if (e.index == 2) {
+							fileTool.galleryImgs(showvideoPrcFiles);
+						}
+					}
+				);
+        })
+
+        function showvideoPrcFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+                }
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+						var imgurl = uploadFilePreUrl + res;
+                        $(".showVideo").find("img").attr("src", imgurl);
+					});
+				})
+				if (files.length > 0) {}
+		}
+
+        function showvideoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+                }
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+						var imgurl = uploadFilePreUrl + res;
+                        authData.showVideo = res;
+                        // $(".showVideo").attr("src", imgurl);
+					});
+				})
+				if (files.length > 0) {}
+		}
+
+
+        var authData = {
+                            "idCardA": "",
+                            "idCardB": "",
+                            "educationFile": "",
+                            "degreeFile": "",
+                            "skillsCerts": "",
+                            "nickName": "",
+                            "graduate": "",
+                            "major": "",
+                            "education": "",
+                            "categoryIds": "",
+                            "grade": 0,
+                            "introduction": "",
+                            "courseDesc": "",
+                            "prizes": "",
+                            "videoFile": "",
+                            "showVideo": "",
+                            "showPicList": [
+                                ""
+                            ],
+                            "teachingAge": ""
+                        }
+        
+        $('body').on("tap",".big-orange", function(){
+            var self = plus.webview.currentWebview();
+            authData.idCardA = self.idCardA;
+            authData.idCardB = self.idCardB;
+            authData.educationFile = self.educationFile;
+            authData.degreeFile = self.degreeFile;
+            authData.skillsCerts = self.skillsCerts;
+            authData.nickName = $(".nicKname").val();
+            authData.graduate = $(".graduate").val();
+            authData.major = $(".major").val();
+
+            authData.education = $(".education").text();
+            authData.categoryIds = $(".categoryIds").text();
+            authData.grade = parseFloat( $(".grade").text() );
+
+            authData.introduction = $("#introduction").val();
+            authData.courseDesc = $("#courseDesc").val();
+            authData.prizes = $("#prizes").val();
+
+            postData(teacherAuthUrl, authData, function(res){
+                if(res.resultCode == "301024"){
+                    mui.toast(res.desc)
+                    mui.openWindow({
+                        url:'mine.html',
+                        id:'mine.html'
+                    });
+                }else{
+                    mui.toast(res.desc)
+                }
+            })
+        })
+    })
+</script>
+
+</html>

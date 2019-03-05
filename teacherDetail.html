@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+    <!-- <link rel="stylesheet" href="css/main.css" /> -->
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/teacher/teacher.css">
+</head>
+<body>
+<div class="tearcher-detail">
+    <section class="banner">
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <!-- <div class="swiper-slide">
+                    <img class="fmImg" src="img/banner.png" alt="">
+                </div> -->
+				
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+    <section class="teacher-info clearfix">
+        <div class="img-box g-fl">
+                <img id="headImg" src="img/head-img.png" alt="">
+                <img src="img/index-lv.png" class="lv-box" alt="">
+        </div>
+           <div class="info g-over">
+               <!-- <p class="g-fs-16 color-black g-bold">
+                   王明老师
+                   <img class="ml-5" src="img/study-img.png" alt="">
+                   <img src="img/skill-img.png" alt="">
+               </p>
+               <p class="g-fs-13 color-grey">
+                   吉他、钢琴
+               </p>
+               <p class="g-fs-13 color-grey">
+                   南京市江宁大学-音乐专业
+               </p> -->
+           </div>
+    </section>
+
+    <section class="teacher-ul">
+            <div class="teacher-item clearfix border-li">
+                    <!-- <a id="11" href="javascipt:vold(0);" class="small-button default-button g-fr">报名</a> -->
+            </div>
+    </section>
+
+    <section class="tip-li">   
+        <div class="box border-li">
+            <div class="title g-fs-16 color-black">
+                个人简介
+            </div>
+            <div class="tip-info g-fs-14 color-grey grjj">
+            </div>
+        </div>
+
+        <div class="box border-li">
+                <div class="title g-fs-16 color-black">
+                        课程简介
+                </div>
+                <div class="tip-info g-fs-14 color-grey kcjj">
+                </div>
+            </div>
+
+
+            <div class="box ">
+                    <div class="title g-fs-16 color-black">
+                        获奖情况
+                    </div>
+                    <div class="tip-info g-fs-14 color-grey hjqk">
+                    </div>
+                </div>
+				
+			<!-- 	<p>链接地址：</p>
+            <input id="sharehref"  type="url" value="" />
+            <p>链接标题：</p>
+            <input id="sharehrefTitle"  type="text" value="title" />
+            <p>链接描述：</p>
+            <input id="sharehrefDes"  type="text" value="test"/></br> -->
+            
+            <!-- <a href="javascript:void(0);l" onclick="shareHref()"> 分享</a> -->
+
+    </section>
+
+</div>
+</body>
+<script src="js/swiper.min.js"></script>
+<script src="js/shareweixin.js" type="text/javascript"></script>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+   
+    mui.init({swipeBack: true});
+   
+	var tearcherID=null;
+    mui.ready(function(){
+		
+        if(mui.os.plus){
+            mui.plusReady(function () {
+				
+                var self = plus.webview.currentWebview();
+				console.log(self)
+				$("#sharehref").attr("value",self);
+                query(self.targetId);
+                getLession(self.targetId);
+				tearcherID=self.targetId;
+				console.log(tearcherID);
+                // mui.toast(self.targetId);
+				
+            })
+        }else{
+            var targetId = getQueryString('targetId');
+            query(targetId);
+			tearcherID=getQueryString('targetId');
+            getLession(targetId);
+            // mui.toast(targetId);
+        }
+		
+	
+        function query(teacherId){
+            var data = {
+                teacherID: teacherId
+            }
+            postData(teacherDetailUrl, data, function(res){
+                if (res.resultCode == "000000") {
+					
+                    var detailData = res.teacherDetail;
+                    var info =  '<p class="g-fs-16 color-black g-bold">'+ detailData.nickName +'<img class="ml-5" src="img/study-img.png" alt="">'
+                            +'<img src="img/skill-img.png" alt=""></p>'
+                            +'<p class="g-fs-13 color-grey">'+ detailData.lessonCategoryName +'</p>'
+                            +'<p class="g-fs-13 color-grey">'+ detailData.graduate +' - '+ detailData.major +'</p>'
+                    $(".info").append(info);
+                        
+                    $("#headImg").attr("src", detailData.portraitRequestUrl);
+                    $(".grjj").text(detailData.introduction);
+                    $(".kcjj").text(detailData.courseDesc);
+                    $(".hjqk").text(detailData.prizes);
+					var swiperStr="";
+					swiperStr+='<div class="swiper-slide"><video style="width:100%;height:100%;" controls preload="auto" autoplay >';
+					swiperStr+='<source src="'+detailData.showVideoUrl +'"type="video/mp4"></source></video></div>';
+                    swiperStr+='<div class="swiper-slide"><video style="width:100%;height:100%;" controls preload="auto">';
+					swiperStr+='<source src="'+detailData.videoFileUrl+ '"type="video/mp4"></source></video></div>';
+					if(detailData.showPics){
+						  swiperStr+='<div class="swiper-slide"><img'+detailData.showPics+ '></div>';
+					}
+					
+					 $(".swiper-wrapper").append(swiperStr);
+			 var swiper = new Swiper('.swiper-container', {
+					pagination: {
+						el: '.swiper-pagination',
+					},
+					 on: {
+						 slideChangeTransitionStart: function(){
+						 for(var i=0;i<$(".swiper-slide").length;i++){
+							  $(".swiper-slide").eq(i).find("video").get(0).pause()
+						 }
+						 },
+						slideChangeTransitionEnd: function(){
+						 console.log(this.activeIndex)
+								 $(".swiper-slide").eq(this.activeIndex).find("video").get(0).play()
+						
+						},
+				
+					}
+						});
+					
+
+                } else {
+                    mui.toast(res.desc);
+                }
+            })
+        }
+
+        function getLession(teacherId){
+            var data = {
+                teacherID: teacherId
+            }
+            postData(teacherLessonUrl, data, function(res){
+                if (res.resultCode == "000000") {
+                    var detailData = res.lessonList;
+					// console.log(detailData)
+					// console.log(res.lessonList)
+					if(res.lessonList<=0){
+						$(".teacher-ul").hide();
+						return ;
+					}
+					console.log(detailData)
+                    for(var i=0; i<detailData.length;i++){
+                        //确认参数
+                        // if(datailData[i].isExperienceCourse == 0){
+                        var tyk = detailData[i].isExperienceCourse == 0 ? "<i>体验课</i>": "<span></span>"
+                        var info ='<div class="teacher-item clearfix border-li">'
+                                    +'<div class="g-fl">'
+                                    +'<p class="g-fs-16 color-black g-bold">'+ detailData[i].categoryName + tyk + '</p>'
+                                    +'<p class="g-fs-16 color-orange">￥'+ detailData[i].price +' <span class="g-fs-12 color-deepgrey">'+ detailData[i].classHour +'课时</span></p>'
+                                    +'</div>'
+                                    +'<a id="'+ detailData[i].id +'" href="javascipt:vold(0);" class="small-button default-button g-fr">报名</a>'
+                                    +'</div>'
+										
+										
+                        $(".teacher-ul").append(info);
+                        // }
+                    }
+                } else {
+                    mui.toast(res.desc);
+                }
+            })
+        } 
+
+        mui('.teacher-ul').on('tap','.small-button', function(){
+			// console.log(teacherID)
+            var targetId = this.getAttribute("id");
+                var baseUrl = "courseDetail.html";
+                var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+                mui.openWindow({
+                        url: url,
+                        extras: {
+                            targetId: targetId,
+							tearcherID:tearcherID
+                        }
+                });
+        })
+
+    })
+	
+	
+	mui.plusReady(function(){
+		updateSerivces();
+	})
+</script>
+</html>

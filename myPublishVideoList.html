@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link href="css/article/index.css" rel="stylesheet">
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-transparent">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-btn mui-btn-link mui-pull-right">
+                    <span class="mui-icon mui-icon-plusempty"></span>
+            </h1>
+    </header>
+    <div class="article-index padding-bot mt44">
+        <section class="info-list">
+            <!-- <div class="video-bigbox showinfo">
+                <div class="li-item">
+                    <div class="video-box border-li">
+                            <video controls>
+                                <source src="http://vdse.bdstatic.com//0ce574b077682f7525f666fd9700f088?authorization=bce-auth-v1/fb297a5cc0fb434c971b8fa103e8dd7b/2017-05-11T09:02:31Z/-1//d2ed31351b2f374a92f888d18bfeaf7e7ad7594a2dc2a1e18ca5f91384a20a22" type="video/mp4">
+                            </video>
+                    </div>
+                    <div class="bottom-video clearfix">
+                        <div class="g-fl g-fs-15 color-black g-bold">共享教室视频标题</div>
+                        <a href="javascipt:vold(0);" class="g-fr color-deepgrey"><span class="mui-icon mui-icon-trash g-fs-16"></span> 删除</a>
+                    </div>
+                </div>
+            </div> -->
+        </section>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/mui.min.js"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init({
+		swipeBack: true
+		})
+    mui.ready(function(){
+        var lessonId = "";
+        var result ="";
+        if(mui.os.plus){
+            var self = plus.webview.currentWebview();
+            lessonId = self.targetId
+            query(lessonId)
+                
+        }else{
+            var targetId = getQueryString('targetId');
+            lessonId = targetId;
+            query(lessonId)
+        }
+        
+        //del
+        mui('body').on("tap", ".color-deepgrey", function(){
+            var videoId = this.getAttribute("id");
+            var requestData ={
+                id : videoId
+            }
+            postData(delVideoUrl, requestData, function(res){
+                if (res.resultCode == '000000'){
+                        location.reload();
+                }else{
+                    mui.toast(res.desc);
+                }
+            })
+        })
+
+        function query(lessonId) {
+            var requestData ={
+                id: lessonId
+                }
+            postData(videoListUrl, requestData, function(res){
+                var list = res.videoList;
+                if (res.resultCode == '000000'){
+                    for(var i = 0; i < list.length; i++){
+                        $(".info-list").append('<div class="video-bigbox showinfo">'
+                                                +'<div class="li-item">'
+                                                +'<div class="video-box border-li">'
+                                                +'<video controls>'
+                                                +'<source src="'+ uploadFilePreUrl + list[i].url +'" type="video/mp4">'
+                                                +'</video>'
+                                                +'</div>'
+                                                +'<div class="bottom-video clearfix">'
+                                                +'<div class="g-fl g-fs-15 color-black g-bold">'+ list[i].name +'</div>'
+                                                +'<a id="'+ list[i].id +'"href="javascipt:vold(0);" class="g-fr color-deepgrey"><span class="mui-icon mui-icon-trash g-fs-16"></span> 删除</a>'
+                                                +'</div>'
+                                                +'</div>'
+                                                +'</div>');
+                        
+                    }
+                }else{
+                    mui.toast(res.desc);
+                }
+            });
+        }
+    
+   	mui('.mui-pull-right')[0].addEventListener('tap', function(){
+   			mui.openWindow({
+   					url:'publishVideo.html',
+   					id:'publishVideo.html',
+   					extras: {
+   							detail: ""   
+   					}
+   			});
+       });
+   })
+</script>
+
+</html>

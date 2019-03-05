@@ -1,0 +1,45 @@
+@charset "utf-8";
+
+/**
+ * @description: YX915 首页账号交流、娱乐八卦、验证中心、客服中心
+ * @createData:  2018-03-14 14:45
+ */
+
+.nav {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.nav a {
+    width: 25%;
+    float: left;
+    text-align: center;
+}
+
+.nav a img {
+    width: 32px;
+    height: 32px;
+    display: block;
+    margin: 0 auto;
+}
+.nav a p {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #202020;
+}
+
+.nav a.active:nth-child(1) p {
+    color: #fc524c;
+}
+
+.nav a.active:nth-child(2) p {
+    color: #ffa942;
+}
+
+.nav a.active:nth-child(3) p {
+    color: #2db8fb;
+}
+
+.nav a.active:nth-child(4) p {
+    color: #9367f8;
+}

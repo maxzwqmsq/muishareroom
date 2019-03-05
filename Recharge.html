@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/commen.css">
+		<link rel="stylesheet" href="css/order/order.css">
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<style>
+			.input-item{
+				background: #fff;
+				line-height:12vw;
+				padding:0 6vw;
+			}
+			.input-item input{
+				height:12vw;
+				padding:0;
+				margin:0;
+				border:#fff;
+				text-align: right;
+			
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">充值</h1>
+		</header>
+		<div class="now-buy mt44">
+			<div class="input-item clearfix g-fs-14">
+				充值金额  
+				<input type="number" style="width:60%;" id="price" class="g-fr" placeholder="请输入充值金额">
+			</div>
+			<div class="pay-type">
+				<div class="mui-input-row mui-radio mui-left">
+					<label class="payStyle">微信支付
+						<input name="radio" value="wxpay" type="radio" checked>
+					</label>
+				</div>
+				<div class="mui-input-row mui-radio mui-left">
+					<label class="payStyle">支付宝支付
+						<input name="radio" value="alipay" type="radio">
+					</label>
+					<!-- <img src="img/wei-pay.png" alt=""> -->
+				</div>
+			</div>
+			<a href="javascipt:vold(0);" id="btn_pay" class="big-button big-orange g-fs-16">立即支付</a>
+		</div>
+	</body>
+	<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+	<script src="js/config.js" type="text/javascript"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			//         var data = self.detail;
+			var targetId = null;
+
+// 			console.log(targetId)
+// 			var orderData = {
+// 				id: targetId
+// 			};
+			
+			var payStyle = "wxpay";
+			$(".payStyle").on("tap", function() {
+				var payName = $(this).text();
+				console.log(payName)
+				payStyle = payName == "微信支付" ? "wxpay" : "alipay";
+				getChannels();
+			})
+			//定义支付通道
+			var channel = null;
+			//获取支付通道
+
+			//获取支付通道的方法
+			function getChannels() {
+				plus.payment.getChannels(function(channels) {
+					for (var i = 0; i < channels.length; i++) {
+						if (channels[i].id == payStyle) {
+							channel = channels[i];
+						}
+					}
+					plus.ui.toast("使用支付方式:" + channel.id);
+				}, function(e) {
+					// mui.toast("获取支付通道失败!");
+					console.log("获取支付通道失败!");
+				})
+			}
+
+			//发起微信支付请求的方法
+			function pay(id) {
+				//获取微信支付参数的url
+				var wx_basic_url = "http://api.heidui.com/order/pay";
+
+				var param = {
+					id:id,
+					payMethod: 2,
+					
+				};
+				// var wx_basic_url = payStyle=="wxpay"?  ALIPAYSERVER:WXPAYSERVER ;
+				if (payStyle)
+					mui.ajax(wx_basic_url, {
+						data: param,
+						dataType: "text",
+						type: "get",
+						success: ajax_success_callback,
+						error: ajax_error_callback
+					})
+			}
+
+			//获取微信支付参数成功的回调函数
+			function ajax_success_callback(resObj) {
+				console.log("请求微信支付参数成功,返回的json:");
+				var res_str = resObj;
+				console.log(res_str);
+				//用返回参数 发起微信支付请求
+				plus.payment.request(channel, res_str, wxpay_success, wxpay_error);
+			}
+			//获取微信支付参数失败的回调函数
+			function ajax_error_callback(e) {
+				console.log(e)
+				console.log("ajax获取参数失败");
+			}
+			//微信支付成功回调
+			function wxpay_success(result) {
+				plus.ui.alert("充值成功!", function() {
+					// back();
+					mui.openWindow({
+							url:"mine.html",
+							createNew:true
+					})
+				})
+			}
+			//微信支付失败回调
+			function wxpay_error(error) {
+				// plus.ui.alert("支付失败!");
+				console.log(error)
+				// plus.ui.alert(JSON.stringify(error));
+				console.log(JSON.stringify(error));
+				// mui.toast(JSON.stringify(error))
+			}
+			// 微信支付按钮 发起微信支付
+			$("#btn_pay").click(function() {
+				// 创建订单 iD?
+				if($("#price").val()==''){
+					mui.toast("请输入充值金额！");
+					return ;
+				}
+				            var orderData = {
+				                            "orderType": 3,
+				                            "totalPrice":$("#price").val(),
+											  "price":$("#price").val(),
+											  'count':1
+				            }
+				            orderData.payMethod = payStyle == "wxpay" ? "1" : "2";
+				            postData(addOrderUrl, orderData, function(res){
+				                if(res.resultCode == "000000"){
+				                   
+				                    //支付
+				                    pay(res.order.id);
+				                }else{
+				                    mui.toast(res.desc)
+				                }
+				            })
+			})
+
+
+
+
+		});
+
+		//     mui.ready(function() {
+		//         //lessonDetail是从课程详情传过来的 此处先copy来用
+		//         var lessonDetail ={
+		//             lessonPics: "img/head-img.png",
+		//             name: "吉他 I 尤克里入门课程",
+		//             price: 1000,
+		//             classHour: "60 课时",
+		//             portrait: "img/head-img.png",
+		//             teacherName: "徐帅老师",
+		//             grade: "吉他特级教师",
+		//             viedopicList: [
+		//                             "img/head-img.png",
+		//                             "img/head-img.png",
+		//                             "img/head-img.png"],
+		//             category: "吉他/尤克里里",
+		//             courseLevel: "高级",
+		//             studentNum: 1,
+		//             classHourLength: 45,
+		//             lessonDesc: "擅长吉他演奏，拥有十余年的吉他教育经验"
+		//         };
+		//         $("img").attr("src",lessonDetail.lessonPics);
+		//         $("#lessName").append('<p class="g-fs-16 class-name color-black g-bold">'+ lessonDetail.name +'</p>'
+		//                             +'<p class="g-fs-13 color-grey">'+ lessonDetail.classHour +'<span class="g-fs-16 color-orange">￥'+ lessonDetail.price +'</span> </p>');
+		//         $("#teacherName").text(lessonDetail.teacherName);
+		//         $(".mui-table-view").append('<li class="mui-table-view-cell g-fs-14 color-grey">价格<span class="g-fr price">'+ lessonDetail.price +'</span><span class="g-fr"> ¥</span></li>')
+		//         
+		//     });
+	</script>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/commen.css">
+		<link rel="stylesheet" href="css/order/order.css">
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的订单</h1>
+		</header>
+		<div class="order-box mt44 ">
+			<section class="order-tab clearfix fix-box" style="margin-top:44px;">
+				<div class="tab-item g-fl g-text-center active">全部订单</div>
+				<div class="tab-item  g-text-center">待付款</div>
+				<div class="tab-item g-fr  g-text-center">已付款</div>
+			</section>
+			<div id="refresh">
+				<section class="order-list" style="margin-top:24.6vw;">
+				</section>
+			</div>
+		</div>
+	</body>
+	<style>
+		.mui-pull-bottom-pocket{
+			display: none!important;
+		}
+	</style>
+	<script src="js/mui.min.js"></script>
+	<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script src="js/config.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		
+		// mui.plusReady(function(){
+		// 	    mui.back=function()
+		// 	   	{
+		//       return false ;					
+		// 	   	}
+		// 	plus.key.addEventListener('backbutton',function(){
+		// 			mui.openWindow({
+		// 			url:"mine.html"
+		// 		})
+		// 	})
+		// })
+
+		mui.ready(function(resp) {
+			var count = 0;
+			var dataList = [];
+			mui.init({
+				swipeBack: false,
+			
+			});
+			query();
+			
+			$(function() {
+				$(".order-tab div").click(function() {
+					$(this).addClass("active").siblings().removeClass("active");
+					count = 0;
+					$(".order-list").empty();
+					query();
+				})
+			});
+
+			function query() {
+				var requestData = {
+					"orderType": "",
+					"status": "",
+					"lessonID": "",
+					"teacherID": "",
+					"payMethod": "",
+					"pageNo": "0",
+					"pageSize": "10"
+				}
+				count++;
+				requestData.pageNo = String(count);
+				console.log(requestData.pageNo)
+
+				postData(orderListUrl, requestData, function(res) {
+					if (res.resultCode == '000000') {
+					    dataList = res.dataList;
+// 						setTimeout(nextRefresh, 1000); 
+// 						function nextRefresh() {	
+// 							mui('#refresh').pullRefresh().endPullupToRefresh(dataList.length == 0); 
+// 						}
+						filterOrder();
+					} else {
+						mui.toast(res.desc);
+					}
+				});
+			}
+
+			function filterOrder() {
+				var dataListDetail = [];
+				for (var i = 0; i < dataList.length; i++) {
+					if ($(".active").text() == "待付款" && dataList[i].status == 1) {
+						dataListDetail.push(dataList[i])
+					} else if ($(".active").text() == "已付款" && dataList[i].status == 2) {
+						dataListDetail.push(dataList[i])
+					} else if ($(".active").text() == "全部订单") {
+						dataListDetail.push(dataList[i])
+					}
+				}
+				appendTable(dataListDetail)
+			}
+
+
+			var appendTable = function(dataListDetail) {
+				console.log(dataListDetail);
+				var htmlstr = '';
+				for (var i = 0; i < dataListDetail.length; i++) {
+
+					htmlstr += '<div class="order-item"><div class="title-box clearfix border-li">';
+					htmlstr += '<span class="g-fl g-fs-15 color-grey">订单号：' + dataListDetail[i].orderCode + '</span>';
+					if (dataListDetail[i].status == 1) {
+						htmlstr += '<span id="' + dataListDetail[i].id + '" class="g-fr g-fs-13 color-orange">待支付</span>';
+					} else if (dataListDetail[i].status == 2) {
+						htmlstr += '<span id="' + dataListDetail[i].id + '" class="g-fr g-fs-13 color-deepgrey">已完成</span>';
+					} else if (dataListDetail[i].status == 3) {
+						htmlstr += '<span id="' + dataListDetail[i].id + '" class="g-fr g-fs-13 color-deepgrey">退款中</span>';
+					} else if (dataListDetail[i].status == 4) {
+						htmlstr += '<span id="' + dataListDetail[i].id + '" class="g-fr g-fs-13 color-deepgrey">已取消</span>';
+					}
+					htmlstr += '</div>' +
+						'<div  data-id="' + dataListDetail[i].orderCode +'"id="' + dataListDetail[i].id +  '" class="info clearfix border-li">' +
+						'<div class="img-box g-fl">' +
+						'<img src="' + dataListDetail[i].picUrl + '" alt="">' +
+						'</div>' +
+						'<div>'
+
+						+
+						'<p class="g-fs-16 color-black g-bold">' + dataListDetail[i].lessonName + '</p>' +
+						'<p class="g-fs-16 color-orange">￥' + dataListDetail[i].price + '</p>' +
+						'<p class="g-fs-12 color-grey">' + dataListDetail[i].classHour + '课时</p>' +
+						'</div>' +
+						'</div>';
+						if (dataListDetail[i].status == 1) {
+							htmlstr += '<div class="bottom-btn clearfix">' +
+								'<a data-id="' + dataListDetail[i].id + '" class="delOrder small-button default-button g-fr">' +
+								'删除' +
+								'</a>' +
+								'<a data-id="' + dataListDetail[i].id + '" class="goPay small-button default-button g-fr">' +
+								'支付' +
+								'</a>' +
+								'</div>'
+						}
+
+					htmlstr += '</div>'
+					// console.log(htmlstr)
+					
+				}
+				$(".order-list").append(htmlstr);
+			}
+
+			//gopath
+			$("body").on("tap", ".goPay", function() {
+				var targetId = $(this).data("id");
+				var baseUrl = "goPay.html";
+				var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+				mui.openWindow({
+					url: url,
+					extras: {
+						targetId: targetId
+					}
+				});
+			})
+			// del
+			$("body").on("tap", ".delOrder", function() {
+				console.log($(this).parents(".order-item").find(".g-fr"))
+				var del = {
+					"id": $(this).parents(".order-item").find(".g-fr").attr("id")
+				}
+				postData(delOrderUrl, del, function(res) {
+					if (res.resultCode == "000000") {
+						mui.toast("删除订单成功")
+						location.reload();
+					} else {
+						mui.toast(res.desc)
+					}
+				})
+			})
+			
+			$(".order-list").on("tap", ".info", function() {
+				
+					var id =$(this).attr("id");
+					console.log(id)
+					mui.openWindow({
+						url: 'orderDetail.html',
+						extras: {
+							targetId: id
+						}
+					});
+			})
+
+			//orgin
+			// query();
+
+		});
+	</script>
+
+</html>

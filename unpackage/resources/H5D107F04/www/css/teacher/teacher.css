@@ -1,0 +1,242 @@
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #C0C0C0;
+  opacity: 1;
+}
+
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #C0C0C0;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder {
+  color: #C0C0C0;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder {
+  color: #C0C0C0;
+  opacity: 1;
+}
+
+.teacher-box .border-top {
+  border-top: 0.53333vw solid #f5f5f6;
+}
+
+.teacher-box .mgno {
+  margin-top: 0 !important;
+}
+
+.teacher-box .stepshop-box {
+  height: 11.73333vw;
+  line-height: 11.73333vw;
+  background: #fff;
+  padding: 0 10.66667vw;
+}
+
+.teacher-box .stepshop-box .step-shopitem {
+  width: 50%;
+  font-size: 3.2vw;
+  color: #121212;
+  position: relative;
+}
+
+.teacher-box .stepshop-box .step-shopitem .mui-icon-arrowright {
+  position: absolute;
+  right: -8vw;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 4.8vw;
+}
+
+.teacher-box .stepshop-box .active {
+  color: #FF774E;
+}
+
+.teacher-box .step-box {
+  height: 11.73333vw;
+  line-height: 11.73333vw;
+  background: #fff;
+  padding: 0 5.33333vw;
+}
+
+.teacher-box .step-box .step-item {
+  width: 33.33%;
+  font-size: 3.2vw;
+  color: #121212;
+  position: relative;
+}
+
+.teacher-box .step-box .step-item .mui-icon-arrowright {
+  position: absolute;
+  right: -4vw;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-size: 4.8vw;
+}
+
+.teacher-box .step-box .active {
+  color: #FF774E;
+}
+
+.teacher-box .main-box {
+  background: #fff;
+  margin-top: 2.66667vw;
+  padding: 0 5.33333vw;
+  padding-bottom: 5.33333vw;
+}
+
+.teacher-box .main-box .title-box {
+  height: 10.66667vw;
+  line-height: 10.66667vw;
+}
+
+.teacher-box .main-box .upload-btn {
+  text-align: center;
+  margin: 5.33333vw 0;
+}
+
+.teacher-box .main-box .upload-btn p {
+  font-size: 3.73333vw;
+  color: #9B9B9B;
+  margin-top: 2.66667vw;
+}
+
+.teacher-box .main-box .upload-btn .img-box {
+  margin: 0 auto;
+  width: 37.33333vw;
+  height: 26.66667vw;
+}
+
+.teacher-box .main-box .upload-btn .img-box img {
+  width: 100%;
+  height: 100%;
+}
+
+.teacher-box .main-box .mtop {
+  margin-top: 2.66667vw;
+}
+
+.teacher-box .mui-table-view {
+  margin-top: 2.66667vw;
+}
+
+.teacher-box .mui-table-view input[type=text] {
+  width: 37.33333vw;
+  height: 5.33333vw;
+  margin: 0;
+  border: none;
+  text-align: right;
+  font-size: 3.73333vw;
+}
+
+.teacher-box .mui-table-view .mui-table-view-cell span {
+  padding-right: 5.33333vw;
+  font-size: 3.73333vw;
+  color: #C0C0C0;
+}
+
+.teacher-box .mui-table-view .mui-table-view-cell img {
+  width: 10.66667vw;
+  height: 10.66667vw;
+}
+
+.teacher-box .mui-table-view .img-li {
+  padding: 2.13333vw 4vw;
+}
+
+.teacher-box .mui-table-view .img-li span {
+  line-height: 13.33333vw;
+}
+
+.teacher-box .fill-info {
+  margin-top: 2.66667vw;
+  padding: 0 4vw;
+  padding-bottom: 4vw;
+  background: #fff;
+}
+
+.teacher-box .fill-info .upvideo-title {
+  height: 10.66667vw;
+  line-height: 10.66667vw;
+}
+
+.teacher-box .fill-info .upload-class {
+  margin-top: 1.33333vw;
+  width: 21.33333vw;
+  height: 14.66667vw;
+}
+
+.teacher-box .fill-info .upload-class img {
+  width: 100%;
+  height: 100%;
+}
+
+.teacher-box .fill-info .fill-title {
+  height: 9.06667vw;
+  line-height: 9.06667vw;
+  font-size: 15px;
+  color: #4A4A4A;
+}
+
+.teacher-box .fill-info textarea {
+  padding: 0;
+  margin: 0;
+  border: none;
+  height: 16vw;
+  font-size: 14px;
+}
+
+.teacher-box .cash-banner img {
+  width: 100%;
+  display: block;
+}
+
+.teacher-box .cash-banner .info-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding-top: 8vw;
+  transform: translate(-50%, -50%);
+  border: 0.26667vw solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  text-align: center;
+  width: 26.66667vw;
+  height: 26.66667vw;
+  border-radius: 100%;
+}
+
+.teacher-box .cash-banner .info-box p {
+  color: #fff;
+}
+
+.teacher-box .cash-banner .info-box p:first-child {
+  margin-bottom: 1.33333vw;
+}
+
+.teacher-box .class-button {
+  width: 100vw;
+}
+
+.teacher-box .class-button a {
+  display: inline-block;
+  height: 13.33333vw;
+  width: 50%;
+  line-height: 13.33333vw;
+  text-align: center;
+  background: #fff;
+  font-size: 4.26667vw;
+  color: #FF774E;
+}
+
+.teacher-box .class-button a:last-child {
+  color: #fff;
+  background-image: linear-gradient(43deg, #FF774E 2%, #F99E30 100%);
+}
+
+.teacher-box .video-buttonbox {
+  background: #fff;
+  padding: 2.66667vw;
+}

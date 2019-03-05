@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/mui.min.css" />
+		<link rel="stylesheet" href="css/commen.css">
+		<link rel="stylesheet" href="css/order/order.css">
+	</head>
+	<body>
+		<div class="now-buy">
+			<section class="info-box clearfix">
+				<div class="img-box g-fl">
+					<img src="img/head-img.png" alt="">
+				</div>
+				<div id="lessName" class="g-fl">
+					<!-- <p class="g-fs-16 class-name color-black g-bold">吉他 I 尤克里入门课程</p>
+                    <p class="g-fs-13 color-grey">10 课时 <span class="g-fs-16 color-orange">￥1000</span> </p> -->
+				</div>
+				<div id="teacherName" class="name g-fr g-fs-17">
+
+				</div>
+			</section>
+
+			<div class="class-info">
+
+			</div>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell g-fs-14 color-grey">价格 <span class="g-fr priceinfo color-orange"> </span></li>
+                 <li class="mui-table-view-cell g-fs-14 color-grey">订单状态 <span class="g-fr orderstatus "> </span></li>   
+			</ul>
+
+			
+		</div>
+	</body>
+	<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+	<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+	<script src="js/config.js" type="text/javascript"></script>
+	<script src="js/mui.min.js"></script>
+	<script src="js/main.js" type="text/javascript"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init({
+			swipeBack: true
+		});
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			//         var data = self.detail;
+			var targetId = self.targetId;
+			console.log(targetId)
+			var orderData = {
+				id: targetId
+			};
+			postData(orderDetailUrl, orderData, function(res) {
+				if (res.resultCode == "000000") {
+					console.log(res)
+					var price='¥'+res.order.price;
+					$(".priceinfo").text(price);
+					var text='';
+					if (res.order.status == 1) {
+						text='待支付';
+						$(".orderstatus").addClass("color-orange")
+					} else if (res.order.status == 2) {
+						text='已完成';
+					} else if (res.order.status == 3) {
+						text='退款中';;
+					} else if (res.order.status == 4) {
+						text='已取消';
+					}
+					$(".orderstatus").text(text);
+					var htmlstr = '';
+					htmlstr += '<p class="g-fs-16 class-name color-black g-bold">' + res.order.lessonName + '</p>';
+					htmlstr += '<p class="g-fs-13 color-grey">' + res.order.classHour + '<span class="g-fs-16 color-orange">￥' +
+						res.order.price + '</span> </p>';
+					$("#lessName").append(htmlstr);
+					$("#teacherName").text(res.order.teacherName);
+					var classStr = '';
+					classStr += '<p class="g-fs-14 color-grey date">开课日期：' + res.order.courseDate;
+					var weekstr = '';
+					switch (res.order.week) {
+						case '1':
+							weekstr = '星期一';
+							break;
+						case '2':
+							weekstr = '星期二';
+							break;
+						case '3':
+							weekstr = '星期三';
+							break;
+
+						case '4':
+							weekstr = '星期四';
+							break;
+						case '5':
+							weekstr = '星期五';
+							break;
+						case '6':
+							weekstr = '星期六';
+							break;
+						case '7':
+							weekstr = '星期日';
+							break;
+					}
+					classStr += '</p><p class="g-fs-14 color-grey">' + weekstr+res.order.startTime+ '</p>';
+					$(".class-info").append(classStr);
+				} else {
+					mui.toast(res.desc)
+				}
+			})
+
+			var payStyle = "wxpay";
+			$(".payStyle").on("tap", function() {
+				var payName = $(this).text();
+				console.log(payName)
+				payStyle = payName == "微信支付" ? "wxpay" : "alipay";
+				getChannels();
+			})
+			//定义支付通道
+			var channel = null;
+			//获取支付通道
+
+			//获取支付通道的方法
+			function getChannels() {
+				plus.payment.getChannels(function(channels) {
+					for (var i = 0; i < channels.length; i++) {
+						if (channels[i].id == payStyle) {
+							channel = channels[i];
+						}
+					}
+					plus.ui.toast("使用支付方式:" + channel.id);
+				}, function(e) {
+					// mui.toast("获取支付通道失败!");
+					console.log("获取支付通道失败!");
+				})
+			}
+
+			//发起微信支付请求的方法
+			function pay() {
+				//获取微信支付参数的url
+				var wx_basic_url = "http://api.heidui.com/order/pay";
+
+				var param = {
+					id: targetId,
+					payMethod: 2
+				};
+				// var wx_basic_url = payStyle=="wxpay"?  ALIPAYSERVER:WXPAYSERVER ;
+				if (payStyle)
+					mui.ajax(wx_basic_url, {
+						data: param,
+						dataType: "text",
+						type: "get",
+						success: ajax_success_callback,
+						error: ajax_error_callback
+					})
+			}
+
+			//获取微信支付参数成功的回调函数
+			function ajax_success_callback(resObj) {
+				console.log("请求微信支付参数成功,返回的json:");
+				var res_str = resObj;
+				console.log(res_str);
+				//用返回参数 发起微信支付请求
+				plus.payment.request(channel, res_str, wxpay_success, wxpay_error);
+			}
+			//获取微信支付参数失败的回调函数
+			function ajax_error_callback(e) {
+				console.log(e)
+				console.log("ajax获取参数失败");
+			}
+			//微信支付成功回调
+			function wxpay_success(result) {
+				plus.ui.alert("支付成功!", function() {
+					// back();
+					mui.openWindow({
+						url: 'paySuccess.html',
+						id: 'paySuccess.html',
+						extras: {
+							detail: ""
+						}
+					})
+
+				})
+			}
+			//微信支付失败回调
+			function wxpay_error(error) {
+				// plus.ui.alert("支付失败!");
+				console.log(error)
+				// plus.ui.alert(JSON.stringify(error));
+				console.log(JSON.stringify(error));
+				mui.openWindow({
+					url: 'payError.html',
+					id: 'payError.html',
+					extras: {
+						detail: ""
+					}
+				})
+			}
+			// 微信支付按钮 发起微信支付
+			$("#btn_pay").click(function() {
+				//创建订单 iD?
+				pay();
+				//             var orderData = {
+				//                             "id": targetId,
+				//                             "orderType": "1",
+				//                             "payMethod": "",
+				//                             "price": "",
+				//                             "lessonID": targetId
+				//             }
+				//             orderData.price = $(".price").text();
+				//             orderData.payMethod = payStyle == "wxpay" ? "1" : "2";
+				//             postData(addOrderUrl, orderData, function(res){
+				//                 if(res.resultCode == "000000"){
+				//                     mui.toast("支付成功!")
+				//                     //支付
+				//                     pay();
+				//                 }else{
+				//                     mui.toast(res.desc)
+				//                 }
+				//             })
+				// 
+
+			})
+
+
+
+
+		});
+
+		//     mui.ready(function() {
+		//         //lessonDetail是从课程详情传过来的 此处先copy来用
+		//         var lessonDetail ={
+		//             lessonPics: "img/head-img.png",
+		//             name: "吉他 I 尤克里入门课程",
+		//             price: 1000,
+		//             classHour: "60 课时",
+		//             portrait: "img/head-img.png",
+		//             teacherName: "徐帅老师",
+		//             grade: "吉他特级教师",
+		//             viedopicList: [
+		//                             "img/head-img.png",
+		//                             "img/head-img.png",
+		//                             "img/head-img.png"],
+		//             category: "吉他/尤克里里",
+		//             courseLevel: "高级",
+		//             studentNum: 1,
+		//             classHourLength: 45,
+		//             lessonDesc: "擅长吉他演奏，拥有十余年的吉他教育经验"
+		//         };
+		//         $("img").attr("src",lessonDetail.lessonPics);
+		//         $("#lessName").append('<p class="g-fs-16 class-name color-black g-bold">'+ lessonDetail.name +'</p>'
+		//                             +'<p class="g-fs-13 color-grey">'+ lessonDetail.classHour +'<span class="g-fs-16 color-orange">￥'+ lessonDetail.price +'</span> </p>');
+		//         $("#teacherName").text(lessonDetail.teacherName);
+		//         $(".mui-table-view").append('<li class="mui-table-view-cell g-fs-14 color-grey">价格<span class="g-fr price">'+ lessonDetail.price +'</span><span class="g-fr"> ¥</span></li>')
+		//         
+		//     });
+	</script>
+</html>

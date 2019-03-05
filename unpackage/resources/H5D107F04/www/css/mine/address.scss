@@ -1,0 +1,72 @@
+$vm_base: 375;
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+.address-box{
+    .address-item{
+        margin-top:vw(10);
+        background: #fff;
+        padding: 0 vw(5);
+        div{
+            padding:0 vw(15);
+            height:vw(34);
+            line-height: vw(34);
+            img{
+                width:vw(14);
+            }
+        }
+        .info{
+            height: vw(36);
+            line-height: vw(36);
+        }
+    }
+}
+
+.address-set{
+    margin-top:vw(10);
+    .item-set{
+        .ml-5{
+            margin-left:vw(5);
+        }
+        background:#fff;
+        height:vw(42);
+        line-height: vw(42);
+        padding:0 vw(20);
+        img{
+            width:vw(10);
+            vertical-align: vw(-2);
+        }
+        p{
+            line-height: vw(42);
+        }
+    }
+
+    .item-change{
+        background:#fff;
+        height:vw(48);
+        line-height: vw(48);
+        padding:0 vw(20);
+        input{
+            width:vw(160);
+           height: vw(48);
+            padding:0;
+            margin:0;
+            line-height: vw(48);
+            border:none;
+            text-align: right;
+        }
+        
+    }
+    .chose-type{
+        background:#fff;
+        margin-top: vw(10);
+        padding:0 vw(20);
+        height: vw(46);
+        line-height: vw(46);
+        .small-button{
+            width:vw(64);
+            font-size: vw(12);
+            margin-left:vw(20);
+        }
+    }
+}

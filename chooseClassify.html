@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/classify/classify.css">
+</head>
+<body>
+	<header class="mui-bar mui-bar-transparent">
+					<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+                    <h1 class="mui-title">选择分类</h1>
+                    <h1 class="mui-btn mui-btn-link mui-pull-right">确定</h1>
+	</header>
+        <section class="classify-index clearfix mt44">
+                <div class="left js-tab">
+					
+                </div>
+                <div class="right clearfix">
+					
+                </div>
+        </section>
+</body>
+<script src="js/swiper.min.js"></script>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true,
+    });
+    $(function(){
+        $(".js-tab .item").click(function(){
+                $(this).addClass("active").siblings().removeClass("active");
+        })
+    })
+    mui.ready(function(){
+        var getData = {
+                        "parentID": "-1"
+                        }
+        var list = ""
+        postData(allCategoryUrl, getData, function(res){
+            if(res.resultCode == "000000"){
+                $(".js-tab").empty();
+                list = res.dataList;
+                for(var i=0; i<list.length; i++){
+                    var tpl = '<div id="'+ list[i].id +'" class="item">'+ list[i].name +'</div>'
+                    $(".js-tab").append(tpl)
+                }
+                $(".js-tab").each(function(){
+                    $(this).find("div").first().addClass("active");
+                });
+                var fc = $(".js-tab").find("div:first-child")
+                query(fc.attr("id"))
+            }else{
+                mui.toast(res.desc)
+            }
+        })
+
+        mui("body").on("tap", ".item", function(){
+                $(this).addClass("active").siblings().removeClass("active");
+                var val = this.getAttribute("id");
+                query(val);
+        })
+
+        function query(id){
+            var childData = "";
+            for(var i=0; i<list.length; i++){
+                if(id == list[i].id){
+                    childData = list[i].childCategory;
+                }
+            }
+            $(".right").empty();
+            for(var i=0; i<childData.length; i++){
+                var tpl = '<div class="mui-input-row mui-checkbox">'
+                            +'<label><img src="'+ childData[i].iconFile +'" alt=""><p>'+ childData[i].name +'</p></label>'
+                            +'<input name="checkbox1" data-name="'+ childData[i].name +'" value="'+ childData[i].id +'" type="checkbox"></div>'
+                $(".right").append(tpl);
+            }
+        }
+
+        $('.mui-pull-right')[0].addEventListener("tap",function(){
+            var checkId = [];//定义一个空数组 
+            var names = []
+            $("input[name='checkbox1']:checked").each(function(i){//把所有被选中的复选框的值存入数组
+                checkId[i] = $(this).val();
+                names[i] = $(this).data("name");
+            })
+            var targetId  = checkId.toString();
+            var nameList = names.toString();
+            var baseUrl = "publishQuestionOne.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+                    url: url,
+                    createNew: true,
+                    styles: {
+                        cachemode:"noCache",
+                    },
+                    extras: {
+                        targetId: targetId,
+                        names: nameList
+                    }
+            });
+
+
+        }); 
+    })
+</script>
+</html>

@@ -1,0 +1,75 @@
+.address-box .address-item {
+  margin-top: 2.66667vw;
+  background: #fff;
+  padding: 0 1.33333vw;
+}
+
+.address-box .address-item div {
+  padding: 0 4vw;
+  height: 9.06667vw;
+  line-height: 9.06667vw;
+}
+
+.address-box .address-item div img {
+  width: 3.73333vw;
+}
+
+.address-box .address-item .info {
+  height: 9.6vw;
+  line-height: 9.6vw;
+}
+
+.address-set {
+  margin-top: 2.66667vw;
+}
+
+.address-set .item-set {
+  background: #fff;
+  height: 11.2vw;
+  line-height: 11.2vw;
+  padding: 0 5.33333vw;
+}
+
+.address-set .item-set .ml-5 {
+  margin-left: 1.33333vw;
+}
+
+.address-set .item-set img {
+  width: 2.66667vw;
+  vertical-align: -0.53333vw;
+}
+
+.address-set .item-set p {
+  line-height: 11.2vw;
+}
+
+.address-set .item-change {
+  background: #fff;
+  height: 12.8vw;
+  line-height: 12.8vw;
+  padding: 0 5.33333vw;
+}
+
+.address-set .item-change input {
+  width: 42.66667vw;
+  height: 12.8vw;
+  padding: 0;
+  margin: 0;
+  line-height: 12.8vw;
+  border: none;
+  text-align: right;
+}
+
+.address-set .chose-type {
+  background: #fff;
+  margin-top: 2.66667vw;
+  padding: 0 5.33333vw;
+  height: 12.26667vw;
+  line-height: 12.26667vw;
+}
+
+.address-set .chose-type .small-button {
+  width: 17.06667vw;
+  font-size: 3.2vw;
+  margin-left: 5.33333vw;
+}

@@ -1,0 +1,145 @@
+.order-box .order-tab {
+  font-size: 3.73333vw;
+  height: 12.26667vw;
+  background: #fff;
+  line-height: 12.26667vw;
+  padding: 0 5.33333vw;
+  text-align: center;
+}
+
+.order-box .order-tab .tab-item {
+  width: 16vw;
+  display: inline-block;
+}
+
+.order-box .order-tab .active {
+  color: #FF774E;
+  position: relative;
+}
+
+.order-box .order-tab .active::after {
+  content: "";
+  width: 90%;
+  height: 0.53333vw;
+  background: #FF774E;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0);
+}
+
+.order-box .order-list {
+  margin-top: 2.66667vw;
+}
+
+.order-box .order-list .order-item {
+  margin-bottom: 2.66667vw;
+  background: #fff;
+}
+
+.order-box .order-list .order-item .title-box {
+  padding: 0 5.33333vw;
+  height: 11.73333vw;
+  line-height: 11.73333vw;
+}
+
+.order-box .order-list .order-item .title-box a img {
+  width: 4.26667vw;
+}
+
+.order-box .order-list .order-item .info {
+  padding: 2.66667vw 5.33333vw;
+}
+
+.order-box .order-list .order-item .info .vedeo-title {
+  height: 11.73333vw;
+}
+
+.order-box .order-list .order-item .info .class-edit {
+  position: absolute;
+  right: 5.33333vw;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 16vw;
+  font-size: 3.73333vw;
+}
+
+.order-box .order-list .order-item .info .img-box {
+  margin-right: 2.66667vw;
+  width: 16vw;
+  height: 16vw;
+  border-radius: 1.06667vw;
+}
+
+.order-box .order-list .order-item .info .img-box img {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.06667vw;
+}
+
+.order-box .order-list .order-item .info .date {
+  margin-left: 5.33333vw;
+}
+
+.order-box .order-list .order-item .bottom-btn {
+  height: 12.26667vw;
+  line-height: 12.26667vw;
+  padding-right: 5.33333vw;
+}
+
+.order-box .order-list .order-item .bottom-btn .small-button {
+  margin: 2.13333vw 0;
+  margin-left: 2.66667vw;
+  width: 18.66667vw;
+  font-size: 3.2vw;
+  color: #4A4A4A;
+}
+
+.now-buy .info-box {
+  margin-top: 2.66667vw;
+  padding: 5.33333vw;
+  background: #fff;
+}
+
+.now-buy .info-box .img-box {
+  margin-right: 2.66667vw;
+}
+
+.now-buy .info-box .img-box img {
+  width: 13.33333vw;
+  height: 13.33333vw;
+  border-radius: 1.06667vw;
+}
+
+.now-buy .info-box .class-name {
+  height: 8vw;
+}
+
+.now-buy .info-box .name {
+  padding-top: 4vw;
+}
+
+.now-buy .class-info {
+  padding: 2.66667vw 5.33333vw;
+  margin: 2.66667vw 0;
+  background: #fff;
+}
+
+.now-buy .class-info .date {
+  margin-bottom: 2.66667vw;
+}
+
+.now-buy .pay-type {
+  margin-top: 2.66667vw;
+  background: #fff;
+}
+
+.now-buy .pay-type .mui-checkbox input[type=checkbox] {
+  top: 2vw;
+  left: 3.73333vw;
+}
+
+.now-buy .pay-type img {
+  width: 8vw;
+  vertical-align: middle;
+}

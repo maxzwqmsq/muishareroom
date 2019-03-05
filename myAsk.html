@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+   <link rel="stylesheet" href="css/main.css" />
+   <link rel="stylesheet" href="css/mui.min.css" />
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/answers/tip.css">
+
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-transparent">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">我的回答</h1>
+	</header>
+    <div class="myanswer-index mt44">
+        <section class="tearcher-info">
+            <img class="tx" src="img/tearcher-head.png" alt="">
+            <p class="g-fs-16 color-black g-bold title"></p>
+            <p class="g-fs-12 color-grey gxqm"></p>
+        </section>
+        <section class="tab-box clearfix">
+            <a href="javascipt:vold(0);" class="g-fl myAsk active">
+                回答<span class="answerCount"></span>
+            </a>
+            <a href="javascipt:vold(0);" class="g-fr myAsk">
+                提问<span class="askCount"></span>
+            </a>
+        </section>
+
+        <section class="info-list">
+            <!-- <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-13 color-deepgrey g-text-rt">一天前</p>
+            </div>
+
+            <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-13 color-deepgrey g-text-rt">一天前</p>
+            </div>
+
+
+            <div class="item-box">
+                <p class="g-fs-16 color-black g-bold">视频一播放标准动作解析</p>
+                <p class="g-fs-14 color-grey">街舞动作解析视屏，要求慢动作姿势标准动作连贯作姿势标准动作连贯</p>
+                <p class="g-fs-13 color-deepgrey g-text-rt">一天前</p>
+            </div> -->
+        </section>
+    </div>
+</body>
+<script src="js/mui.min.js"></script>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+	var id=null;
+    mui.plusReady(function () {
+    // console.log(self.targetId)
+	var self = plus.webview.currentWebview();
+       id=self.targetId;
+	   if(id){
+		   console.log(id)
+		   $(".mui-title").text("个人主页");
+	   }
+       // mui.toast(self.targetId);
+   })
+    mui.ready(function(){
+        var getInfo = {
+                            'userID':  id
+                        }
+        postData(userInfoUrl, getInfo, function(res){
+            if(res.resultCode == "000000"){
+                 queryAnswer();//初始刷新
+                $(".title").text(res.nickName);
+                $(".gxqm").text(res.autograph);
+                $(".tx")[0].src = res.portraitRequestUrl;
+            }else{
+                mui.toast(res.desc)
+            }
+        })
+
+        mui("body").on("tap", ".myAsk", function(){
+            var info = this.innerText;
+            if(info.indexOf("回答")!==-1){
+                queryAnswer();
+            }else{
+                queryAsk();
+            }
+            $(this).addClass("active").siblings().removeClass("active");
+        })
+
+        function queryAnswer(){
+            var AnswerData = {
+							'userID':id,
+                            "pageNo": 0,
+                            "pageSize": "10"
+                        }
+            postData(userAnswerUrl, AnswerData, function(res){
+                if(res.resultCode == "000000"){
+                    $(".info-list").empty();
+                    $(".answerCount").text(res.total)
+                    var data = res.list;
+                    for(var i=0; i<data.length; i++){
+                        var tpl =  '<div class="item-box" id="' + data[i].questionID + '">'
+                                    +'<p class="g-fs-16 color-black g-bold">'+ data[i].nickName +'</p>'
+                                    +'<p class="g-fs-14 color-grey">'+ data[i].answer +'</p>'
+                                    +'<p class="g-fs-13 color-deepgrey g-text-rt">'+ data[i].createTime +'</p></div>'
+                        $(".info-list").append(tpl);
+                    }
+                }else{
+                    mui.toast(res.desc)
+                }
+            })
+        }
+
+        // wenti
+        function queryAsk(){
+            var AskData = {
+							'userID':id,
+                            "pageNo": 0,
+                            "pageSize": "10"
+                        }
+            postData(userQuestionUrl, AskData, function(res){
+                if(res.resultCode == "000000"){
+                    $(".info-list").empty();
+                    $(".askCount").text(res.total)
+                    var data = res.list;
+                    for(var i=0; i<data.length; i++){
+
+                        var tpl =  '<div class="item-box" id="' + data[i].id + '">'
+                                    +'<p class="g-fs-16 color-black g-bold">'+ data[i].content +'</p>'
+                                    +'<p class="g-fs-14 color-grey">'+ data[i].supply +'</p>'
+                                    +'<p class="g-fs-13 color-deepgrey g-text-rt">'+ data[i].createTime +'</p></div>'
+                        $(".info-list").append(tpl);
+                    }
+                }else{
+                    mui.toast(res.desc)
+                }
+            })
+        }
+
+        mui(".info-list").on("tap", ".item-box", function(){
+            var targetId = this.getAttribute("id");
+                var baseUrl = "publishQuestionDetail.html";
+                var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+                mui.openWindow({
+                        url: url,
+                        extras: {
+                            targetId: targetId
+                        }
+                });
+        })
+
+    })
+</script>
+
+</html>

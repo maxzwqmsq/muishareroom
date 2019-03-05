@@ -1,0 +1,48 @@
+/**
+ * @description: BAOMU
+ * @createData:  2018-07-19 20:00
+ */
+
+@charset "utf-8";
+/*重置浏览器样式*/
+@import "normalize.css";
+
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex-v {
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.flex-1 {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.none {
+    display: none;
+}
+
+.btn-activation:visited,
+.btn-activation:active {
+    color: #000 !important;
+}

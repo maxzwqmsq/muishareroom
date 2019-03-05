@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/mine/address.css">
+
+</head>
+<body>
+	 <div id="add" class="big-button big-orange">新增</div>
+     <div class="address-box">  
+     </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({swipeBack: true});
+    mui.ready(function() {
+		mui("#add")[0].addEventListener('tap', function(){
+			mui.openWindow({
+							url: 'setAddress.html',
+							id: 'setAddress.html'
+					})
+        })
+
+        mui("body").on("tap", ".editAddress", function(){
+            var targetId = this.getAttribute("id");
+            var baseUrl = "setAddress.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+            url: url,
+            extras: {
+                targetId: targetId
+            }
+            });
+        })
+        var requestData = {};
+        postData(addressListUrl, requestData, function(res){
+                var resultCode = res.resultCode;
+				if (resultCode == '000000')
+				{
+                    var addressList = res.addressList;
+                    for(var i=0;i<addressList.length; i++){
+                        var tpl = '<div class="address-item">'
+                                    +'<div class="info g-fs-15 color-black border-li">'
+                                        +'地址'
+                                        +'</div>'
+                                        +'<div class=" g-fs-14 color-grey clearfix">'
+                                        +'<span class="g-fl">'
+                                        +addressList[i].province
+                                        +addressList[i].city
+                                        +addressList[i].area
+                                        +addressList[i].addressDetail
+                                        +'</span> '
+                                        +'<span id='+ addressList[i].id +' class="g-fr editAddress">'
+                                        +'<img src="img/address-img.png" alt="">'
+                                        +'</span>'
+                                        +'</div>'
+                                        +'</div>'
+                         $(".address-box").append(tpl);
+                    }
+				}
+				else
+				{
+					mui.toast(res.desc);
+				}
+        });
+    });
+</script>
+</html>

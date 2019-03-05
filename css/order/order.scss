@@ -1,0 +1,141 @@
+$vm_base: 375;
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+.order-box{
+    .order-tab{
+        font-size:vw(14);
+        height:vw(46);
+        background:#fff;
+        line-height: vw(46);
+        padding:0 vw(20);
+        text-align: center;
+        .tab-item{
+            width:vw(60);
+            display: inline-block;
+        }
+        .active{
+            color: #FF774E;
+            position: relative;
+        }
+        .active::after{
+            content: "";
+            width:90%;
+            height:vw(2);
+            background:#FF774E;
+            position: absolute;
+            left:50%;
+            bottom:0;
+            transform: translate(-50%,0);
+        }
+    }
+    .order-list{
+        margin-top:vw(10);
+        .order-item{
+            margin-bottom:vw(10);
+            background:#fff;
+            .title-box{
+                padding: 0 vw(20);
+                height: vw(44);
+                line-height: vw(44);
+                // border-bottom:vw(1) solid  #EFEFEF;
+                a{
+                    img{
+                        width:vw(16);
+                    }
+                }
+            }
+            .info{
+                .vedeo-title{
+                    height:vw(44);
+                }
+                .class-edit{
+                    position:absolute;
+                    right:vw(20);
+                    top:50%;
+                    transform: translate(0,-50%);
+                    width:vw(60);
+                    font-size:vw(14);
+                }
+                padding: vw(10) vw(20);
+                .img-box{
+                    margin-right:vw(10);
+                    width: vw(60);
+                    height:vw(60);
+                    border-radius: vw(4);
+                    img{
+                        width:100%;
+                        height: 100%;
+                        border-radius: vw(4);
+                    }
+                }
+
+                .date{
+                    margin-left:vw(20);
+                }
+            }
+
+            .bottom-btn{
+                height:vw(46);
+                line-height: vw(46);
+                padding-right:vw(20);
+                .small-button{
+                   margin:vw(8) 0;
+                   margin-left:vw(10);
+                   width:vw(70);
+                   font-size:vw(12);
+                   color: #4A4A4A;
+                }
+            }
+           
+        }
+    }
+}
+
+//立即支付
+.now-buy{
+    .info-box{
+        margin-top:vw(10);
+        padding:vw(20);
+        background: #fff;
+        .img-box{
+            margin-right:vw(10);
+            img{
+                width:vw(50);
+                height:vw(50);
+                border-radius: vw(4);
+            }
+        }
+        .class-name{
+            height:vw(30);
+        }
+
+        .name{
+            
+            padding-top:vw(15);
+         
+        }
+       
+    }
+
+    .class-info{
+        padding:vw(10) vw(20);
+        margin:vw(10) 0;
+        background:#fff;
+        .date{
+            margin-bottom:vw(10);
+        }
+    }
+    .pay-type{
+        margin-top:vw(10);
+        background:#fff;
+        .mui-checkbox input[type=checkbox]{
+            top:vw(12);
+            left:vw(14)
+        }
+        img{
+            width:vw(30);
+            vertical-align: middle;
+        }
+    }
+}

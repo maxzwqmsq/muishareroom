@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/mine/index.css">
+</head>
+<body>
+    <header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">学员中心</h1>
+    </header>
+    <div class="personal-center mt44">
+            <ul class="mui-table-view">
+                    <li class="mui-table-view-cell g-fs-15 head-item">头像
+                        <div class="head-box g-fr">
+                            <img class="portrait" src="img/head-img.png" alt="">
+                        </div>
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15">昵称
+                        <input class="g-fr nickName" placeholder="请输入昵称" type="text">
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15">手机号码
+                        <input class="g-fr phone" placeholder="请输入手机号码" type="text">
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15">
+                        <a class="mui-navigate-right">性别
+                            <span class="g-fr sex">男</span>
+                        </a>
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15">
+                        <a class="mui-navigate-right">出生年月
+                            <span class="g-fr birthday">1992-02-31</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="mui-table-view m-top">
+                        <li class="mui-table-view-cell g-fs-15">个性签名
+                            <input class="g-fr signature" placeholder="请输入昵称" type="text">
+                        </li>
+                </ul>
+                <div id="updateBtn" class="big-button big-orange">确定</div>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true
+    });
+
+    mui.ready(function(){
+        var toMine = function() {
+            mui.openWindow({
+                    url:'mine.html',
+                    id:'mine.html'
+                });
+        };
+
+        //update
+        var updateButton = document.getElementById('updateBtn');
+        updateButton.addEventListener('tap', function(event) {
+            var userData = {
+                            // "portrait": $(".portrait")[0].src,
+                            "portrait": '',
+                            "nickName": $(".nickName").val(),
+                            "phone": $(".phone").val(),
+                            // "sex": $(".sex").text(),
+                            "sex": "1",
+                            "birthday": $(".birthday").text(),
+                            "signature": $(".signature").val()
+                        }
+  
+            postData(userUpdateUrl, userData, function(res) {
+                    if(res.resultCode == "000000"){
+                        toMine();
+                    }else{
+                        mui.toast(res.desc);
+                    }
+            });
+        });
+
+        //真机环境调试
+        mui.plusReady(function() {
+            var userData = plus.webview.currentWebview().detail;
+            $(".nickName").val(userData.nickName);
+            $(".portrait")[0].src = userData.portrait;
+            $(".phone").val(userData.phone)
+            $(".sex").text(userData.sex)
+            $(".birthday").text(userData.birthday)
+            $(".signature").val(userData.signature)
+        });
+
+    })
+</script>
+</html>

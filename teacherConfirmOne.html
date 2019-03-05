@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+	<link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/teacher/teacher.css">
+</head>
+<body>  
+    	<header class="mui-bar mui-bar-transparent">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+                <h1 class="mui-title">老师认证</h1>
+        </header>
+       <div class="teacher-box mt44">
+        <section class="step-box clearfix">
+                <div class="step-item g-fl g-text-rl active">1.上传身份证信息 <span class="mui-icon mui-icon-arrowright"></span></div>
+                <div class="step-item g-fl g-text-center">2.学历证书  <span class="mui-icon mui-icon-arrowright"></span></div>
+                <div class="step-item g-fl g-text-rt">3.提交资料</div>
+        </section>
+
+        <section class="main-box">
+                <div class="title-box g-fs-15 color-grey">身份图片</div>
+                <div class="upload-btn mtop">
+                    <div class="img-box">
+                        <img id="zmimg" src="img/upload-img.png" alt="">
+                    </div>
+                    <p>正面上传</p>
+                </div>
+
+                <div class="upload-btn">
+					<div class="img-box">
+						<img id="fmimg" src="./img/upload-img.png" alt="">
+					</div>
+					<p>反面上传</p>
+				</div>
+        </section>
+
+        <a href="javascipt:vold(0);" class="big-button big-orange next">下一步</a>
+
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+	mui.init({swipeBack: true});
+	
+    mui.plusReady(function() {
+		//认证信息回填
+		// var backData = {
+		// 					"undefined": ""
+		// 				}
+		// postData(teacherAuthInfoUrl, backData, function(res){
+		// 	if(res.resultCode == "000000"){
+		// 		$("#zmimg").attr("src", )
+		// 	}
+		// })
+
+		var idCardA = "";
+		var idCardB = "";
+
+		fileTool.options.uploadUrl = uploadUrl;
+        mui("#zmimg")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}, {
+							title: '拍照'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(zmdoFiles);
+						} else if (e.index == 2) {
+							fileTool.camera(zmdoFiles);
+						}
+					}
+				);
+        })
+
+        mui("#fmimg")[0].addEventListener("tap", function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}, {
+							title: '拍照'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(fmdoFiles);
+						} else if (e.index == 2) {
+							fileTool.camera(fmdoFiles);
+						}
+					}
+				);
+        })
+		
+		function zmdoFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+						var imgurl = uploadFilePreUrl + res;
+						idCardA = res;
+						$("#zmimg").attr("src", imgurl);
+					});
+				})
+				if (files.length > 0) {}
+		}
+		
+		function fmdoFiles(err, list) {
+			// cosole.log(list);
+				var err = '';
+				var files = [];
+				if (err) {
+					console.log(err);
+				}
+
+				if (list) {
+					mui.each(list, function(index, item) {
+						console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+				fileTool.zoomImage(files[0],function(err,res){
+									var arr=[];
+									arr.push(res);
+									fileTool.imgUpload(arr,function(err,res){
+										var imgurl = uploadFilePreUrl + res;
+										idCardB = res;
+										$("#fmimg").attr("src", imgurl);
+									});
+				})
+
+
+				if (files.length > 0) {
+					//在这里做项目的逻辑，可以打开新页面将files传过去
+					// var fileNames = "";
+					// mui.each(files, function(index, item) {
+					// 	var fileServerPath = " http://m.heidui.com/f"
+					// 	var filePath = apiServerPath + item;
+					// 	//appendImg(filePath);
+					// 	fileNames = item;
+					// });
+				}
+		}
+		
+		$("body").on("tap", ".next",function(){
+			if(!!idCardA&& !!idCardB){
+				mui.openWindow({
+					url: "teacherConfirmTwo.html",
+					extras: {
+						iidCardA: idCardA,
+						idCardB: idCardB
+					}
+				});
+			}else{
+				mui.toast("身份证信息上传不完整")
+			}
+		})
+})
+      
+     
+</script>
+</html>

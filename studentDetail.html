@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/mine/index.css">
+    <link rel="stylesheet" href="css/mui.picker.css"/>
+    <link rel="stylesheet" href="css/mui.poppicker.css" />
+    <link rel="stylesheet" href="css/mui.dtpicker.css"/>
+
+</head>
+<body>
+    <header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">学员中心</h1>
+    </header>
+    <div class="personal-center mt44">
+            <ul class="mui-table-view">
+                    <li class="mui-table-view-cell g-fs-15 head-item border-li">头像
+                        <div class="head-box g-fr" id="userImg">
+                            <img class="portrait" src="img/head-img.png" alt="">
+                        </div>
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15 border-li">昵称
+                        <input class="g-fr nickName" placeholder="请输入昵称" type="text">
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15 border-li">手机号码
+                        <input class="g-fr phone" placeholder="请输入手机号码" type="text">
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15 border-li">
+                        <a id="sex" class="mui-navigate-right">性别
+                            <span id="sexName" class="g-fr sex">男</span>
+                        </a>
+                    </li>
+                    <li class="mui-table-view-cell g-fs-15">
+                        <a class="mui-navigate-right " id="demo2" >出生年月
+                            <span class="g-fr birthday">请选择</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="mui-table-view m-top">
+                        <li class="mui-table-view-cell g-fs-15">个性签名
+                            <input class="g-fr signature" placeholder="请输入个性签名" type="text">
+                        </li>
+                </ul>
+                <div id="updateBtn" class="big-button big-orange">确定</div>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script src="js/base/mui.picker.min.js" type="text/javascript"></script>
+<script src="js/base/mui.dtpicker.js" type="text/javascript"></script>
+<script src="js/base/mui.poppicker.js" type="text/javascript"></script>
+<script src="js/img-tool/app-common.js" type="text/javascript"></script>
+<script src="js/img-tool/file.tools.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true,
+        hardwareAccelerated: true,
+		beforeback: function() {
+			//获得父页面的webview
+			var list = plus.webview.currentWebview().opener();
+			//触发父页面的自定义事件(refresh),从而进行刷新
+			mui.fire(list, 'refresh');
+			//返回true,继续页面关闭逻辑
+			return true;
+		}
+    });
+
+
+    mui.plusReady(function(){
+    
+
+        var imgFileUrl = ""
+        fileTool.options.uploadUrl = uploadUrl;
+        document.getElementById('userImg').addEventListener('tap',function(){
+            plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: [{
+							title: "从手机相册选择"
+						}, {
+							title: '拍照'
+						}]
+					},
+					function(e) {
+						if (e.index == 1) { //点击从相册选择
+							fileTool.galleryImgs(doFiles);
+						} else if (e.index == 2) {
+							fileTool.camera(doFiles);
+						}
+					}
+            );
+        });
+
+        function doFiles(err, list) {
+				var err = '';
+				var files = [];
+				if (err) {
+					// console.log(err);
+				}
+				if (list) {
+					mui.each(list, function(index, item) {
+						// console.log("err " + item.error);
+						if (item.imgUrl) {
+							files.push(item.imgUrl);
+						}
+					});
+				}
+                fileTool.zoomImage(files[0],function(err,res){
+					var arr=[];
+					arr.push(res);
+					fileTool.imgUpload(arr,function(err,res){
+                        var imgurl = uploadFilePreUrl + res;
+                        imgFileUrl = res;
+                        $(".portrait")[0].src = imgurl;
+						
+					});
+				})
+				if (files.length > 0) {}
+		}
+
+       
+        
+        var lessontimeButton = document.getElementById("demo2");
+        lessontimeButton.addEventListener("tap", function () {
+			// console.log("111111111")
+             var dtpicker = new mui.DtPicker(
+                {
+                        type: "date", //设置日历初始视图模式
+                        beginDate: new Date(1950, 04, 25), //设置开始日期
+                        endDate: new Date() //设置开始日期
+                }
+            );
+            dtpicker.show(function (selectItems) {
+                    $("#demo2 span").text(selectItems.text)
+            })
+       })
+			
+			
+        var userPicker = new mui.PopPicker();
+        userPicker.setData([{
+                                value: '1',
+                                text: '男'
+                            }, {
+                                value: '2',
+                                text: '女'
+                            }]);
+        var showUserPickerButton = document.getElementById('sex');
+        var userResult = document.getElementById('sexName');
+        showUserPickerButton.addEventListener('tap', function(event) {
+            userPicker.show(function(items) {
+                //get val
+                userResult.innerText = items[0].text;
+                //返回 false 可以阻止选择框的关闭
+                //return false;
+            });
+        }, false);
+			
+			
+			
+        // var userId =  localStorage.getItem("userId");
+        var userData = {
+                            "undefined": ""
+                        }
+        postData(userUrl, userData, function(res){
+                var userData = res.user;
+                $(".nickName").val(userData.nickName);
+                $(".portrait")[0].src = uploadFilePreUrl+userData.portrait;
+				$(".portrait").attr("data-src",userData.portrait);
+                $(".phone").val(userData.phone)
+                var sexText = userData.sex == "1" ? "男":"女"
+                $(".sex").text(sexText)
+				if(userData.birthdayStr){
+					 $(".birthday").text(userData.birthdayStr)
+				}
+               
+                $(".signature").val(userData.signature)
+        })
+				
+        var toMine = function() {
+            mui.openWindow({
+                    url:'mine.html',
+                    id:'mine.html'
+                });
+        };
+
+        //update
+        var updateButton = document.getElementById('updateBtn');
+        updateButton.addEventListener('tap', function(event) {
+            var userData = {
+                            "portrait": imgFileUrl?imgFileUrl:$(".portrait").attr("data-src"),
+                            "nickName": $(".nickName").val(),
+                            "phone": $(".phone").val(),
+                            "sex": $(".sex").text() == "男"? "1" : "2",
+                            "birthday": $(".birthday").text(),
+                            "signature": $(".signature").val()
+                        }
+            postData(userUpdateUrl, userData, function(res) {
+                    if(res.resultCode == "000000"){
+                        mui.back();
+                    }else{
+                        mui.toast(res.desc);
+                    }
+            });
+        });
+    })
+</script>
+</html>

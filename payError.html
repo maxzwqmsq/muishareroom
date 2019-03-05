@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+	<link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/answers/tip.css">
+</head>
+<body>
+        <div class="answer-last">
+            <section class="banner-box">
+                <img src="img/jieguo-img.png" alt="">
+                <p class="g-fs-14 color-orange">支付失败！</p>
+            </section>
+            <a id="backToOrder" href="javascipt:vold(0);" class="big-button big-orange">我的订单</a>
+            <a id="backToList" href="javascipt:vold(0);" class="big-button big-nofill">返回列表</a>
+        </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/mui.min.js"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true
+    });
+
+    var backToOrderButton = document.getElementById("backToOrder");
+    backToOrderButton.addEventListener("tap", function(event){
+            mui.openWindow({
+                url: 'myOrder.html',
+                id:'myOrder.html',
+                extras: {
+                    detail:""
+                }
+            })
+    });
+    
+    var backToListButton = document.getElementById("backToList");
+    backToListButton.addEventListener("tap", function(event){
+            mui.openWindow({
+                url: 'teacherList.html',
+                id:'teacherList.html',
+                extras: {
+                    detail:""
+                }
+            })
+    });
+</script>
+</html>

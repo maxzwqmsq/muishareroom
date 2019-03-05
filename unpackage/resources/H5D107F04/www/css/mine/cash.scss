@@ -1,0 +1,25 @@
+$vm_base: 375;
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+.cash-box{
+    .title-cash{
+        background: #fff;
+        height: vw(65);
+        padding:0 vw(20);
+        line-height: vw(65);
+    }
+    .cash-li{
+        margin-top:vw(10);
+        padding:0 vw(5);
+        background: #fff;
+       
+        .cash-item{
+            padding:vw(15);
+            height:vw(65);
+            .num{
+                line-height: vw(36);
+            }
+        }
+    }
+}

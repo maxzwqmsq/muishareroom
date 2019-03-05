@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/answers/index.css">
+</head>
+
+<body>
+    <div class="answers-index padding-bot">
+        <section class="input-box  clearfix fix-box">
+            <div class="input-item g-fl">
+               <i class="mui-icon mui-icon-search"></i> <input id="questionInput" type="text" placeholder="输入您的问题">
+            </div>
+            <div class="info color-orange g-fr g-fs-14 gotoAsk">
+               <img src="./img/answer-01.png" alt=""> 提问
+            </div>
+		</section>
+		<div id="refresh">
+			<section class="info-box" style="margin-top:16vw;">
+				<ul class="list-ul">
+
+				</ul>
+			</section>
+		</div>
+
+    </div>
+
+    <section class="tab-main clearfix">
+            <a href="home.html" class="tab-item">
+                <i class="tab-icon tab-index"></i>
+            
+                <p>首页</p>
+            </a>
+            <a href="answers.html" class="tab-item">
+                    <i class="tab-icon tab-answer-active"></i>
+                <p class="color-orange">问答</p>
+            </a>
+            <a href="article.html" class="tab-item">
+                    <i class="tab-icon tab-article"></i>
+                <p>文章</p>
+            </a>
+            <a href="mine.html" class="tab-item">
+                    <i class="tab-icon tab-mine"></i>
+                <p>我的</p>
+            </a>
+        </section>
+</body>
+<!-- <style>
+	.hide{
+		display: none!important;
+	}
+</style> -->
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+	
+		mui.plusReady(function(){
+			mui.back=function()
+				{
+					return false;
+				}
+			var first = null;
+			plus.key.addEventListener('backbutton', function(){
+				//首次按键，提示‘再按一次退出应用’
+				if(!first){
+					first = new Date().getTime();
+					mui.toast('再按一次退出应用');
+					setTimeout(function(){
+						first = null;
+					},2000);
+				} else {
+					if(new Date().getTime() - first < 2000){
+						plus.runtime.quit();
+					}
+	
+			}})
+			
+		})
+	
+		mui.ready(function(){
+			var queryStatus = false;
+			var answerId = "";
+			var count = 0;
+
+			mui.init({
+				pullRefresh : {
+									container: "#refresh",//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+									up: {
+											height: 100,//可选.默认50.触发上拉加载拖动距离
+											auto: true,//可选,默认false.自动上拉加载一次
+											contentrefresh : "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+											contentnomore:'没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+											callback: beginQuery
+											}
+								}
+			});
+
+			mui('.info-box').on('tap','.gotoAnswer',function(event){
+				 event.stopPropagation();
+				var targetId = $(this).children().attr("class");
+                var baseUrl = "answer.html";
+                var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+				
+                mui.openWindow({
+                        url: url,
+                        extras: {
+                            targetId: targetId
+                        }
+                });
+			});
+			
+			mui('.gotoAsk')[0].addEventListener('tap', function(){
+					mui.openWindow({
+							url:'publishQuestionOne.html',
+							id:'publishQuestionOne.html',
+							styles: {
+									cachemode:"noCache"
+								}
+					});
+			});
+			
+			mui('body').on('tap','a',function(){
+					window.top.location.href=this.href;
+			});
+			
+			mui('body').on('tap', '.box',function(){
+				var targetId = this.getAttribute("id");
+				var baseUrl = "publishQuestionDetail.html";
+				
+			
+                var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+                mui.openWindow({
+                        url: url,
+                        extras: {
+                            targetId: targetId
+                        }
+                });
+			});
+			
+			$("#questionInput").change( function(e){
+					var searchVal = $("#questionInput").val();
+					if(!!searchVal){queryStatus = true;}
+					beginQuery();
+			})
+
+			
+			function beginQuery(){
+					var questionData = {
+														"pageNo": 0,
+														"countPerPage": 10,
+														"content": ''
+													}
+					questionData.content = $("#questionInput").val();
+					questionData.pageNo = count++;
+					postData(questionListUrl, questionData, function(res){
+							if (res.resultCode == '000000'){
+									var listData = res.list;
+									if(queryStatus == true){
+										$(".list-ul").empty();
+									}
+									var tpl = "";
+									for(var i=0; i<listData.length; i++){
+										tpl += '<li class="padding-5">'
+												+'<a href="javascipt:vold(0);" id="'+ listData[i].id +'" class="box">'
+												+'<div class="top border-li">'
+												+'<div class="img-box g-fl"><img src="'+ listData[i].portraitReqUrl +'"></div>'
+												+'<div class="info g-over">'
+												+'<p class="g-fs-16 color-black g-bold">'+ listData[i].content +'</p>'
+												+'<p class="g-fs-14 color-grey info-item" style="width:100%;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;height:8.1vw;">'+ listData[i].supply +'</p>'
+												+'</div>'
+												+'</div>'
+												+'<div class="bot clearfix color-grey">'
+												+'<div class="g-fl g-text-lt g-fs-12 color-orange">悬赏：$'+ listData[i].reward +'</div>'
+												+'<div class="g-fl g-text-center g-fs-12">'+ listData[i].num +'个回答</div>'
+												+'<div class="g-fl g-text-rt g-fs-12 gotoAnswer"><img class="'+ listData[i].id +'" src="./img/answer-02.png" alt="">回答</div>'
+												+'</div></a></li>'
+									}
+									$(".list-ul").append(tpl);
+									setTimeout(nextRefresh, 1000); 
+									function nextRefresh() {	
+										mui('#refresh').pullRefresh().endPullupToRefresh(listData.length == 0); 
+										// $(".mui-pull-bottom-pocket").addClass("hide");
+									}
+							}else{
+								mui.toast(res.desc)
+							}
+					})
+			}
+
+		})
+</script>
+
+</html>

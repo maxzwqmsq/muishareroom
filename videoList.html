@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css" />
+	<link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/order/order.css">
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-transparent">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">我的视频</h1>
+    </header>
+    <div class="order-box mt44">
+
+        <section class="order-list">
+
+            <!-- <div class="order-item">
+
+                <div class="info clearfix border-li g-relative">
+                    <div class="img-box g-fl">
+                        <img src="img/head-img.png" alt="">
+                    </div>
+                    <div>
+                        <p class="g-fs-16 color-black g-bold vedeo-title">课时视频1</p>
+
+                        <p class="g-fs-12 color-grey">2018年6月4日</p>
+                    </div>
+
+                    <a href="javascipt:vold(0);" class="small-button default-button class-edit">
+                        播放
+                    </a>
+                </div>
+            </div>
+            <div class="order-item">
+
+                <div class="info clearfix border-li g-relative">
+                    <div class="img-box g-fl">
+                        <img src="img/head-img.png" alt="">
+                    </div>
+                    <div>
+                        <p class="g-fs-16 color-black g-bold vedeo-title">课时视频1</p>
+
+                        <p class="g-fs-12 color-grey">2018年6月4日</p>
+                    </div>
+
+                    <a href="javascipt:vold(0);" class="small-button default-button class-edit">
+                        播放
+                    </a>
+                </div>
+            </div> -->
+        </section>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/mui.min.js"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true
+    });
+    
+
+    $(function () {
+        $(".order-tab div").click(function () {
+            $(this).addClass("active").siblings().removeClass("active");
+        })
+    });
+   
+    mui.ready(function() { 
+        if(mui.os.plus){
+            mui.plusReady(function () {
+                var self = plus.webview.currentWebview();
+                    query(self.targetId);
+                })
+        }else{
+            var targetId = getQueryString('targetId');
+            query(targetId);
+        }
+
+        function query(id){
+            var id = ""
+            var requestData = {
+                "id": id
+            }
+            postData(videoListUrl, requestData, function(res){
+                var list = res.videoList;
+                for(var i = 0; i<res.videoList.length; i++){
+                    $(".order-list").append(
+                      '<div class="order-item">'
+                            +'<div class="info clearfix border-li g-relative">'
+                            +'<div class="img-box g-fl">'
+                            +'<img src="'+ uploadFilePreUrl + list[i].videoPicUrl +'" alt="">'
+                            +'</div>'
+                            +'<div>'
+                            +'<p class="g-fs-16 color-black g-bold vedeo-title">'+ list[i].name +'</p>'
+                            +'<p class="g-fs-12 color-grey">'+ list[i].createTime +'</p>'
+                            +'</div>'
+                            +'<a href="javascipt:vold(0);" id="'+ list[i].id +'" class="small-button default-button class-edit">'
+                            +'播放'
+                            +' </a>'
+                            +'</div>'
+                            +'</div>'
+                    );
+                }
+            });
+        }
+    });
+    mui("body").on("tap", ".class-edit", function(){
+        var targetId = this.getAttribute("id");
+            var baseUrl = "videoDetail.html";
+            var url = mui.os.plus ? baseUrl : baseUrl + "?targetId=" + targetId;
+            mui.openWindow({
+                    url: url,
+                    extras: {
+                        targetId: targetId
+                    }
+            });
+        
+    });
+</script>
+
+</html>

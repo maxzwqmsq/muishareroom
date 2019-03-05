@@ -1,0 +1,71 @@
+.classify-index .left {
+  float: left;
+  width: 30.93333vw;
+  height: 100vh;
+  background: #EFEFEF;
+}
+
+.classify-index .left .item {
+  width: 30.93333vw;
+  height: 14.93333vw;
+  border-bottom: 0.26667vw solid #C0C0C0;
+  line-height: 14.93333vw;
+  text-align: center;
+  color: #000;
+  font-size: 4.26667vw;
+  box-sizing: border-box;
+}
+
+.classify-index .left .active {
+  background: #fff;
+  color: #FF774E;
+  border: none;
+  border-left: 0.53333vw solid #FF774E;
+  box-sizing: border-box;
+}
+
+.classify-index .right {
+  overflow: auto;
+  height: 100vh;
+  background: #fff;
+}
+
+.classify-index .right .mui-checkbox {
+  border-bottom: 0.26667vw solid #EFEFEF;
+}
+
+.classify-index .right .mui-checkbox label {
+  padding: 5.33333vw;
+}
+
+.classify-index .right .mui-checkbox input {
+  line-height: 22.4vw;
+}
+
+.classify-index .right .mui-checkbox img {
+  width: 11.2vw;
+}
+
+.classify-index .right .mui-checkbox p {
+  font-size: 3.2vw;
+  margin-top: 1.33333vw;
+  color: #000;
+}
+
+.classify-index .right .info-item {
+  margin-top: 5.33333vw;
+  text-align: center;
+  width: 33%;
+}
+
+.classify-index .right .info-item img {
+  width: 10.66667vw;
+  line-height: 1;
+}
+
+.classify-index .right .info-item p {
+  margin-top: 1.33333vw;
+  font-size: 3.2vw;
+  color: #000;
+  line-height: 1;
+}

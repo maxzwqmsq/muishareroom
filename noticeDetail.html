@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/notice/notice.css">
+</head>
+<body>
+		<header class="mui-bar mui-bar-transparent">
+		        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		        <h1 class="mui-title">公告详情</h1>
+		</header>
+        <div class="notice-info mt44">
+            <div class="notice-title border-li">
+                <p class="g-fs-15 color-black g-bold title"></p>
+                <p class="g-fs-12 color-deepgrey date"></p>
+            </div>
+            <div class="info">
+                <img src="" alt="" class="cover" style="width: 88vw;height: 40vw;">
+                <p class="content"></p>
+            </div>
+        </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init({
+        swipeBack: true
+    });
+
+    mui.ready(function(){
+        function query(noticeId){
+                var detailData = {
+                    id: noticeId
+                }
+                postData(noticeDetailUrl, detailData, function(res){
+                    if(res.resultCode == "000000"){
+                        $("p.title").text(res.data.title);
+                        $("p.date").text(res.data.createTime);
+                        $("p.content").html(res.data.content);
+                        $(".cover")[0].src = res.data.coverRequestUrl;
+                    }else{
+                        mui.toast(res.desc)
+                    }
+                })
+        }
+
+        if(mui.os.plus){
+            mui.plusReady(function () {
+                var self = plus.webview.currentWebview();
+                query(self.targetId);
+                // mui.toast(self.targetId);
+            })
+        }else{
+            var targetId = getQueryString('targetId');
+            query(targetId);
+            // mui.toast(targetId);
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,193 @@
+$vm_base: 375; 
+@function vw($px) {
+    @return ($px / 375) * 100vw;
+}
+// 发表提问一
+.tip-box{
+    .text-box{
+        margin:vw(10) 0;
+        textarea{
+            width:100%;
+            height:vw(130);
+            border:none;
+            padding:vw(20);
+            margin:0;
+            box-sizing: border-box;
+            font-size: vw(14);
+        }
+    }
+
+    .chose-box{
+        background:#fff; 
+        padding:0 vw(20);
+        .title-box{
+           padding:vw(10) 0;
+            // line-height: vw(40);
+            span{
+                display: block;
+               
+            }
+            a{
+                display:inline-block;
+                font-size: vw(12);
+               width:vw(70);
+               height: vw(20);
+                text-align: center;
+               border:vw(1) solid #ccc;
+               border-radius:vw(20);
+            }
+        }
+        .list-box{
+            padding: vw(20) 0;
+        }
+    }
+   
+   
+}
+// 发表提问二
+.tip-steptwo{
+    .tiptitle-box{
+        padding-left:vw(20);
+        height: vw(45);
+        background:#fff;
+        margin:vw(10) 0;
+        span{
+            height: vw(45);
+            line-height: vw(45);
+        }
+    }
+    .text-box{
+        background:#fff;
+        padding:vw(10) vw(20);
+        textarea{
+            width:100%;
+            height:vw(190);
+            padding:0;
+            border:none;
+            font-size: vw(14);
+        }
+    }
+
+    .select-img{
+        height:vw(45);
+        background:#fff;
+        padding:0 vw(20);
+        a{
+            
+            display: inline-block;
+            img{
+                margin-top: vw(7);
+                width: vw(32);
+                height: vw(32);
+            }
+            
+        }
+        margin-bottom:vw(10); 
+    }
+    
+    .mui-table-view:before{
+        background: #fff;
+    }
+    .mui-table-view:after{
+        background: #fff;
+    }
+  
+    span{
+        padding-right:vw(20);
+    }
+}
+
+// 我的问答
+.myanswer-index{
+   
+   .tearcher-info{
+       text-align: center;
+       padding: vw(20) 0;
+       background:#fff;
+       .title{
+           margin-top:vw(10);
+           margin-bottom:vw(5);
+       }
+       img{
+           width: vw(80);
+           height: vw(80);
+       }
+   }
+    .head-info{
+        height:vw(70);
+        padding:vw(10) 0;
+        box-sizing: border-box;
+        background: #fff;
+        div{
+            position: relative;
+            float: left;
+            width:50%;
+            text-align: center;
+            height:vw(50);
+            p{
+                margin-top:vw(4);
+            }
+        }
+        div:first-child::before{
+            content:'';
+            height:100%;
+            width:vw(1);
+            background:#D7D6D4;
+            position: absolute;
+            right:0;
+            top:0;
+        }
+    }
+
+    .tab-box{
+        margin: vw(10) 0;
+        width:100%;
+        height:vw(45);
+        background:#fff;
+       padding:0 vw(70);
+        a{
+            display: block;
+            height: vw(45);
+            line-height: vw(45);
+            padding:0 vw(5);
+            font-size: 14px;
+            color: #4A4A4A;
+        }
+        .active{
+            color: #FF774E;
+            border-bottom:vw(2) solid  #FF774E; 
+        }
+    }
+
+    .info-list{
+        .item-box{
+            margin-bottom: vw(10);
+            background:#fff;
+            padding:vw(10) vw(20);
+            p{
+                margin-bottom: vw(10);
+            }
+            p:last-child{
+                margin:0;
+            }
+        }
+    }
+}
+
+// 回答结果
+.answer-last{
+    height:100vh;
+    width:100vw;
+    background:#fff;
+    .banner-box{
+        text-align: center;
+        padding:vw(80) 0;
+        margin:0 auto;
+        img{
+        width:vw(150);
+        }
+        p{
+            margin-top:vw(20);
+        }
+    }
+}

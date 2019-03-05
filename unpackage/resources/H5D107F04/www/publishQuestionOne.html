@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link rel="stylesheet" href="css/mui.min.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+    <link rel="stylesheet" href="css/commen.css">
+    <link rel="stylesheet" href="css/answers/tip.css">
+</head>
+<body>
+	<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="title-right mui-pull-right">下一步</h1>
+	</header>
+    <div class="tip-box mt44">
+        <div class="text-box">
+            <textarea name="" id="" placeholder="您的问题（5个字以上）"></textarea>
+        </div>
+        <div class="chose-box">
+            <div class="title-box clearfix">
+                <span class="g-fl g-fs-14 g-bold">已选分类</span>
+                <a href="###" class="g-fr color-grey">选择分类</a>
+            </div>
+            <div class="list-box">
+                <a href="###" class="small-button bg-orange g-fs-14">好感度</a>
+                <a href="###" class="small-button default-button g-fs-14">价格</a>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="mui/dist/js/mui.min.js" type="text/javascript"></script>
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/main.js" type="text/javascript"></script>
+<script type="text/javascript" charset="utf-8">
+    mui.init();
+	mui.ready(function(){
+		mui('.mui-pull-right')[0].addEventListener('tap', function(){
+				mui.openWindow({
+						url:'publishQuestionTwo.html',
+						id:'publishQuestionTwo.html',
+						extras: {
+								detail: ""   
+						}
+				});
+		});
+	})
+</script>
+</html>
